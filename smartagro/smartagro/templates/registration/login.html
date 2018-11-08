@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block profile %}
+
+<div class="w3-card w3-round w3-white">
+	<div class="w3-container">
+		<h4 class="w3-center">Login</h4>
+		<form method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Login</button>
+		</form>
+
+	</div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block content %}
+
+abc
+
+{% endblock %}
