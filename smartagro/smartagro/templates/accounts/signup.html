@@ -4,14 +4,9 @@
 
 <div class="w3-card w3-round w3-white">
 	<div class="w3-container">
-		<h4 class="w3-center">Login</h4>
-		<form method="post">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit">Login</button>
-		</form>
+		<h4 class="w3-center">Registration</h4>
+		Why should I register?
 		<br />
-		<p><a href="/accounts/signup">Register</a></p>
 		<br />
 	</div>
 </div>
@@ -20,6 +15,20 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="w3-container w3-card w3-white w3-round w3-margin">
+	<br/>
+	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+	<h4>Registration</h4><br />
+	<hr class="w3-clear">
+	<p>
+		<form method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Register</button>
+		</form>
+	</p>
+</div>
 
 <div class="w3-row-padding">
         <div class="w3-col m12">
