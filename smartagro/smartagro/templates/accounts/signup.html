@@ -5,7 +5,8 @@
 <div class="w3-card w3-round w3-white">
 	<div class="w3-container">
 		<h4 class="w3-center">Registration</h4>
-		Why should I register?
+		<h6>Why should I register?</h6>
+		It's because it's fun.
 		<br />
 		<br />
 	</div>
@@ -24,7 +25,20 @@
 	<p>
 		<form method="post">
 			{% csrf_token %}
-			{{ form.as_p }}
+			
+			{% for field in form %}
+      			<p>
+					{{ field.label_tag }}<br>
+					{{ field }}
+					{% if field.help_text %}
+						<small style="color: grey">{{ field.help_text }}</small>
+					{% endif %}
+					{% for error in field.errors %}
+						<p style="color: red">{{ error }}</p>
+					{% endfor %}
+      			</p>
+    		{% endfor %}
+			
 			<button type="submit">Register</button>
 		</form>
 	</p>
