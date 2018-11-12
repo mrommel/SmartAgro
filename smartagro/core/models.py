@@ -47,3 +47,11 @@ class Machine(models.Model):
 	def __unicode__(self):
 		return '%s' % (self.name)
 	
+class Person(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	first_name = models.CharField(max_length=64)
+	last_name = models.CharField(max_length=64)
+	image = models.ImageField(upload_to='media/persons', blank=True, null=True)
+	
+	def __unicode__(self):
+		return '%s %s' % (self.first_name, self.last_name)

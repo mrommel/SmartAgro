@@ -7,9 +7,17 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^index$', views.index, name='index'),
+    
+    # data
+    url(r'^data$', views.data, name='data'),
+    
+    # machines
     url(r'^machines$', views.machines, name='machines'),
     url(r'^machine/detail/(?P<machine_id>.+)$', views.machine_detail, name='machine_detail'),
     url(r'^machine/edit/(?P<machine_id>.+)$', views.machine_edit, name='machine_edit'),
+    
+    # persons
+    url(r'^persons$', views.persons, name='persons'),
     
     url(r'accounts/$', include('accounts.urls')), 
     

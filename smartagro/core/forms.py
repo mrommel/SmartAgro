@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 
-from core.models import Machine
+from core.models import Machine, Person
 
 # https://www.caktusgroup.com/blog/2018/05/07/creating-dynamic-forms-django/
 
@@ -28,3 +28,7 @@ class MachineForm(ModelForm):
 	
 	
 		
+class PersonForm(ModelForm):
+	class Meta:
+		model = Person
+		fields = ['first_name', 'last_name', 'image']

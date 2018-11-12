@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from .models import Machine
-from .forms import MachineForm
+from .models import Machine, Person
+from .forms import MachineForm, PersonForm
 
 def index(request):
 	
@@ -11,6 +11,32 @@ def index(request):
 		'data': 'data',
 	})
 	
+def data(request):
+	
+	machines = Machine.objects.all
+	
+	return render(request, 'core/data.html', {
+		'machines': 'machines',
+	})
+
+def persons(request):
+	
+	if request.method == 'POST':
+		form = PersonForm(request.POST)
+		if form.is_valid():
+			person = form.save(commit=False)
+			person.owner = request.user
+			person.save()
+	else:
+		form = PersonForm()
+		
+	persons = Person.objects.all
+	
+	return render(request, 'core/persons.html', {
+		'form': form,
+		'persons': persons
+	})
+
 def machines(request):
 	
 	if request.method == 'POST':
