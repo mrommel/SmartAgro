@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from .models import *
+from .models import Machine
 from .forms import MachineForm
 
 def index(request):
@@ -21,4 +21,9 @@ def machines(request):
 	else:
 		form = MachineForm()
 		
-	return render(request, 'core/machines.html', {'form': form})
+	machines = Machine.objects.all
+	
+	return render(request, 'core/machines.html', {
+		'form': form,
+		'machines': machines
+	})

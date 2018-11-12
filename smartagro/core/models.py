@@ -36,6 +36,7 @@ class Machine(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	name = models.CharField(max_length=64)
 	model = models.ForeignKey(Model, on_delete=models.CASCADE, null=True, blank=True)
+	image = models.ImageField(upload_to='media/machines', blank=True, null=True)
 	
 	# preset from model
 	type = models.CharField(max_length=1, choices=MACHINE_TYPES)

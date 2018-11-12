@@ -49,7 +49,24 @@
   		<div class="w3-card w3-round w3-white">
 			<div class="w3-container w3-padding">
 	  			<h6 class="w3-opacity">List of machines</h6>
-	  			<p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
+	  			<p class="w3-border w3-padding">Status: Feeling Blue</p>
+	  			<p>{{ machines }}</p>
+	  			<table class="w3-table w3-striped">
+	  				<tr>
+	  					<th>#</th>
+	  					<th>name</th>
+	  					<th>model / manufacturer</th>
+	  					<th>company</th>
+	  				</tr>
+	  				{% for machine in machines %}
+	  				<tr>
+	  					<td>0</td>
+	  					<td>{{ machine.name }}</td>
+	  					<td>{{ machine.model.name }} / {{ machine.model.manufacturer.name }}</td>
+	  					<td>abc</td>
+	  				</tr>
+	  				{% endfor %}
+	  			</table>
 			</div>
   		</div>
 	</div>

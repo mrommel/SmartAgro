@@ -8,7 +8,7 @@ from core.models import Machine
 class MachineForm(ModelForm):
 	class Meta:
 		model = Machine
-		fields = ['name', 'model',]
+		fields = ['name', 'model', 'image']
 	
 	#name = forms.CharField(required=True)
 	#model_name = forms.CharField(required=False)
