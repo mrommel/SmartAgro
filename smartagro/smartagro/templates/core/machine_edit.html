@@ -20,7 +20,7 @@
 <div class="w3-container w3-card w3-white w3-round w3-margin">
 	<br/>
 	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-	<h4>New machine</h4><br />
+	<h4>Edit machine</h4><br />
 	<hr class="w3-clear">
 	<p>
 		<form method="post">
@@ -39,39 +39,9 @@
       			</p>
     		{% endfor %}
 			
-			<button type="submit">Add machine</button>
+			<button type="submit">Save machine</button>
 		</form>
 	</p>
-</div>
-
-<div class="w3-row-padding">
-	<div class="w3-col m12">
-  		<div class="w3-card w3-round w3-white">
-			<div class="w3-container w3-padding">
-	  			<h6 class="w3-opacity">List of machines</h6>
-	  			<p class="w3-border w3-padding">Status: Feeling Blue</p>
-	  			<p>{{ machines }}</p>
-	  			<table class="w3-table w3-striped">
-	  				<tr>
-	  					<th>#</th>
-	  					<th>name</th>
-	  					<th>model / manufacturer</th>
-	  					<th>company</th>
-	  					<th>Action</th>
-	  				</tr>
-	  				{% for machine in machines %}
-	  				<tr>
-	  					<td>0</td>
-	  					<td>{{ machine.name }}</td>
-	  					<td>{{ machine.model.name }} / {{ machine.model.manufacturer.name }}</td>
-	  					<td>abc</td>
-	  					<td><a href="/core/machine/detail/{{ machine.id }}">Detail</a></td>
-	  				</tr>
-	  				{% endfor %}
-	  			</table>
-			</div>
-  		</div>
-	</div>
 </div>
 
 {% endblock %}

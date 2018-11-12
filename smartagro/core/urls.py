@@ -8,6 +8,8 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^index$', views.index, name='index'),
     url(r'^machines$', views.machines, name='machines'),
+    url(r'^machine/detail/(?P<machine_id>.+)$', views.machine_detail, name='machine_detail'),
+    url(r'^machine/edit/(?P<machine_id>.+)$', views.machine_edit, name='machine_edit'),
     
     url(r'accounts/$', include('accounts.urls')), 
     

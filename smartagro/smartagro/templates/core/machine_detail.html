@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block profile %}
+
+<div class="w3-card w3-round w3-white">
+	<div class="w3-container">
+		<h4 class="w3-center">Machines</h4>
+		<h6>Why should I add my machines?</h6>
+		Because it's fun.
+		<br />
+		<br />
+	</div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block content %}
+
+<div class="w3-container w3-card w3-white w3-round w3-margin">
+	<br/>
+	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+	<h4>Machine</h4><br />
+	<hr class="w3-clear">
+	<p>
+		{{ machine }}
+	</p>
+	<a href="/core/machine/edit/{{ machine.id }}">Edit</a>
+</div>
+
+{% endblock %}
