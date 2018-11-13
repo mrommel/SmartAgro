@@ -1,5 +1,4 @@
 <!-- https://codepen.io/phemestre/pen/zglJf -->
-$green: #96be11;
 
 @mixin inline {
 	display: inline-block;
@@ -32,11 +31,11 @@ ul.breadcrumbs li {
   	transition: 0.3s ease;
 }
 ul.breadcrumbs li:hover:before {
-  	border-left: 10px solid #96be11;
+  	border-left: 10px solid #3a4b53;
 }
 ul.breadcrumbs li:hover a {
-  	color: #000;
-  	background: #96be11;
+  	color: #fff;
+  	background: #3a4b53;
 }
 ul.breadcrumbs li:before {
   	content: "";
@@ -60,8 +59,8 @@ ul.breadcrumbs li:after {
   	border-bottom: 22px solid transparent;
 }
 ul.breadcrumbs li.active a {
-  	color: #000;
-  	background: #96be11;
+  	color: #fff;
+  	background: #3a4b53;
 }
 ul.breadcrumbs li.first {
   	border-left: none;

@@ -3,6 +3,13 @@
 {% load staticfiles %}
 {% load i18n %}
 
+{% block breadcrumbs %}
+ 	<ul class="breadcrumbs">
+   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
+    	<li class="last active"><a href="/core/data">Data</a></li>
+  	</ul>
+{% endblock %}
+
 {% block profile %}
 
 <div class="w3-card w3-round w3-white">
