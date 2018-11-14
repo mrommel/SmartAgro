@@ -19,28 +19,10 @@ def data(request):
 		'machines': 'machines',
 	})
 
-def persons(request):
-	
-	if request.method == 'POST':
-		form = PersonForm(request.POST)
-		if form.is_valid():
-			person = form.save(commit=False)
-			person.owner = request.user
-			person.save()
-	else:
-		form = PersonForm()
-		
-	persons = Person.objects.all
-	
-	return render(request, 'core/persons.html', {
-		'form': form,
-		'persons': persons
-	})
-
 def machines(request):
 	
 	if request.method == 'POST':
-		form = MachineForm(request.POST)
+		form = MachineForm(request.POST, request.FILES)
 		if form.is_valid():
 			machine = form.save(commit=False)
 			machine.owner = request.user
@@ -74,9 +56,10 @@ def machine_edit(request, machine_id):
 		raise Http404("Machine does not exist")
 	
 	if request.method == "POST":
-		form = MachineForm(request.POST, instance=machine)
+		form = MachineForm(request.POST, request.FILES, instance=machine)
 		if form.is_valid():
 			machine = form.save(commit=False)
+			machine.owner = request.user
 			# do something
 			machine.save()
 			return redirect('machine_detail', machine_id=machine.id)
@@ -87,4 +70,53 @@ def machine_edit(request, machine_id):
 		'form': form
 	})
 	
+def persons(request):
+	
+	if request.method == 'POST':
+		form = PersonForm(request.POST, request.FILES)
+		if form.is_valid():
+			person = form.save(commit=False)
+			person.owner = request.user
+			person.save()
+	else:
+		form = PersonForm()
+		
+	persons = Person.objects.all
+	
+	return render(request, 'core/persons.html', {
+		'form': form,
+		'persons': persons
+	})
 
+def person_detail(request, person_id):
+	
+	try:
+		person = Person.objects.get(pk=person_id)
+	except Person.DoesNotExist:
+		raise Http404("Person does not exist")
+	
+	return render(request, 'core/person_detail.html', {
+		'person': person
+	})
+
+def person_edit(request, person_id):
+	
+	try:
+		person = Person.objects.get(pk=person_id)
+	except Person.DoesNotExist:
+		raise Http404("Person does not exist")
+	
+	if request.method == "POST":
+		form = PersonForm(request.POST, request.FILES, instance=person)
+		if form.is_valid():
+			person = form.save(commit=False)
+			person.owner = request.user
+			# do something
+			person.save()
+			return redirect('person_detail', person_id=person.id)
+	else:
+		form = PersonForm(instance=person)
+	
+	return render(request, 'core/person_edit.html', {
+		'form': form
+	})

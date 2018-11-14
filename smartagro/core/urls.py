@@ -18,6 +18,10 @@ urlpatterns = [
     
     # persons
     url(r'^persons$', views.persons, name='persons'),
+    url(r'^person/detail/(?P<person_id>.+)$', views.person_detail, name='person_detail'),
+    url(r'^person/edit/(?P<person_id>.+)$', views.person_edit, name='person_edit'),
+    
+    # fields
     
     url(r'accounts/$', include('accounts.urls')), 
     

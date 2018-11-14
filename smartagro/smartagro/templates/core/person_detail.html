@@ -7,8 +7,8 @@
  	<ul class="breadcrumbs">
    		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="/core/data">Data</a></li>
-    	<li><a href="/core/machines">Machines</a></li>
-    	<li class="last active"><a href="/core/machine/detail/{{ machine.id }}">{{ machine }}</a></li>
+    	<li><a href="/core/persons">Persons</a></li>
+    	<li class="last active"><a href="/core/person/detail/{{ person.id }}">{{ person }}</a></li>
   	</ul>
 {% endblock %}
 
@@ -16,8 +16,8 @@
 
 <div class="w3-card w3-round w3-white">
 	<div class="w3-container">
-		<h4 class="w3-center">Machines</h4>
-		<h6>Why should I add my machines?</h6>
+		<h4 class="w3-center">Persons</h4>
+		<h6>Why should I add my persons?</h6>
 		Because it's fun.
 		<br />
 		<br />
@@ -32,12 +32,12 @@
 <div class="w3-container w3-card w3-white w3-round w3-margin">
 	<br/>
 	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-	<h4>Machine</h4><br />
+	<h4>Person</h4><br />
 	<hr class="w3-clear">
 	<p>
-		{{ machine }}
+		{{ person }}
 	</p>
-	<a href="/core/machine/edit/{{ machine.id }}">Edit</a>
+	<a href="/core/person/edit/{{ person.id }}">Edit</a>
 </div>
 
 {% endblock %}

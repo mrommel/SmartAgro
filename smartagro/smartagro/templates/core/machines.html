@@ -32,30 +32,30 @@
 	<div class="w3-col m12">
   		<div class="w3-card w3-round w3-white">
 			<div class="w3-container w3-padding">
-	<br/>
-	<img src="{% static 'core/images/machine.png' %}" alt="Machine" class="w3-left w3-margin-right" style="width:60px">
-	<h4>New machine</h4>
-	<hr class="w3-clear">
-	<p>
-		<form method="post">
-			{% csrf_token %}
+				<br/>
+				<img src="{% static 'core/images/machine.png' %}" alt="Machine" class="w3-left w3-margin-right" style="width:60px">
+				<h4>New machine</h4>
+				<hr class="w3-clear">
+				<p>
+					<form method="post" enctype="multipart/form-data">
+						{% csrf_token %}
 			
-			{% for field in form %}
-      			<p>
-					{{ field.label_tag }}<br>
-					{{ field }}
-					{% if field.help_text %}
-						<small style="color: grey">{{ field.help_text }}</small>
-					{% endif %}
-					{% for error in field.errors %}
-						<p style="color: red">{{ error }}</p>
-					{% endfor %}
-      			</p>
-    		{% endfor %}
+						{% for field in form %}
+							<p>
+								{{ field.label_tag }}<br>
+								{{ field }}
+								{% if field.help_text %}
+									<small style="color: grey">{{ field.help_text }}</small>
+								{% endif %}
+								{% for error in field.errors %}
+									<p style="color: red">{{ error }}</p>
+								{% endfor %}
+							</p>
+						{% endfor %}
 			
-			<button type="submit">Add machine</button>
-		</form>
-	</p>
+						<button type="submit">Add machine</button>
+					</form>
+				</p>
 			</div>
   		</div>
 	</div>
@@ -69,6 +69,7 @@
 	  			<table class="w3-table w3-striped">
 	  				<tr>
 	  					<th>#</th>
+	  					<th>image</th>
 	  					<th>name</th>
 	  					<th>model / manufacturer</th>
 	  					<th>company</th>
@@ -77,6 +78,13 @@
 	  				{% for machine in machines %}
 	  				<tr>
 	  					<td>0</td>
+	  					<td>
+	  						{% if machine.image %}
+	  							<img src="/{{ MEDIA_URL }}..{{ machine.image.url }}" />
+	  						{% else %}
+	  							<img src="{% static 'core/images/machine.png' %}" />
+	  						{% endif %}
+	  					</td>
 	  					<td>{{ machine.name }}</td>
 	  					<td>{{ machine.model.name }} / {{ machine.model.manufacturer.name }}</td>
 	  					<td>abc</td>
