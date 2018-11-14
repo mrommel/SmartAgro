@@ -25,7 +25,9 @@ urlpatterns = [
     url(r'^fields$', views.fields, name='fields'),
     
     # documentations
-    url(r'^documentations$', views.documentations, name='documentations'),
+    #url(r'^documentations$', views.documentations, name='documentations'),
+    url(r'^documentations$', views.DocumentationList.as_view(), name='documentation-list'),
+    url(r'^documentation/add$', views.DocumentationFieldCreate.as_view(), name='documentation-add'),
     
     url(r'accounts/$', include('accounts.urls')),     
     url(r'^login/$', auth_views.login, name='login'),

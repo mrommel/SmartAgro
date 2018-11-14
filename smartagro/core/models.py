@@ -96,7 +96,7 @@ class Documentation(models.Model):
 		
 class DocumentationFieldRelation(models.Model):
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
-	field = models.ForeignKey(Field, on_delete=models.CASCADE)
+	field = models.ForeignKey(Field, on_delete=models.CASCADE, blank=True, null=True)
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.documentation, self.field)

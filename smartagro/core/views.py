@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
+from django.db import transaction
 from .models import Machine, Person, Field, Documentation, DocumentationFieldRelation
-from .forms import MachineForm, PersonForm, FieldForm, DocumentationForm
+from .forms import MachineForm, PersonForm, FieldForm, DocumentationForm, DocumentationFieldRelationFormset
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 def index(request):
 	
@@ -139,11 +142,41 @@ def fields(request):
 		'fields': fields
 	})
 
+class DocumentationList(ListView):
+	model = Documentation
+
+class DocumentationFieldCreate(CreateView):
+	model = Documentation
+	fields = ['date', 'duration', 'type']
+	success_url = reverse_lazy('documentation-list')
+	
+	def get_context_data(self, **kwargs):
+		data = super(DocumentationFieldCreate, self).get_context_data(**kwargs)
+		if self.request.POST:
+			data['fields'] = DocumentationFieldRelationFormset(self.request.POST)
+		else:
+			data['fields'] = DocumentationFieldRelationFormset()
+		return data
+	
+	def form_valid(self, form):
+		context = self.get_context_data()
+		fields = context['fields']
+		with transaction.atomic():
+			documentation = form.save(commit=False)
+			documentation.owner = self.request.user
+			documentation.save()
+			self.object = documentation
+			
+			if fields.is_valid():
+				fields.instance = self.object
+				fields.save()
+		return super(DocumentationFieldCreate, self).form_valid(form)
+	
 def documentations(request):
 	
 	if request.method == 'POST':
 		form = DocumentationForm(request.POST, request.FILES)
-		formset = DocumentationFieldFormset(request.POST)
+		formset = DocumentationFieldRelationFormset(request.POST)
 		
 		if form.is_valid() and formset.is_valid():
 			documentation = form.save(commit=False)
@@ -157,12 +190,12 @@ def documentations(request):
 				documentationFieldRelation.save()
 	else:
 		form = DocumentationForm()
-		formset = DocumentationFieldFormset(queryset=DocumentationFieldRelation.objects.none())
+		formset = DocumentationFieldRelationFormset()
 		
 	documentations = Documentation.objects.all
 	
 	return render(request, 'core/documentations/documentations.html', {
 		'form': form,
-		'formset': formset
+		'formset': formset,
 		'documentations': documentations
 	})

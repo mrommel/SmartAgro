@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+ 	<ul class="breadcrumbs">
+   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
+   		<li><a href="/core/data">Data</a></li>
+    	<li class="last active"><a href="/core/documentations">Documentations</a></li>
+  	</ul>
+{% endblock %}
+
+{% block profile %}
+
+<div class="w3-card w3-round w3-white">
+	<div class="w3-container">
+		<h4 class="w3-center">Documentations</h4>
+		<h6>Why should I add my documentations?</h6>
+		Because it's fun.
+		<br />
+		<br />
+	</div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block content %}
+
+<div class="w3-row-padding">
+	<div class="w3-col m12">
+  		<div class="w3-card w3-round w3-white">
+			<div class="w3-container w3-padding">
+				<br/>
+				<img src="{% static 'core/images/person.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:60px">
+				<h4>New documentation</h4>
+				<hr class="w3-clear">
+				<p>
+					<form action="" method="post">
+						{% csrf_token %}
+        				{{ form.as_p }}
+
+						<table class="table">
+							{{ fields.management_form }}
+
+							{% for form in fields.forms %}
+								{% if forloop.first %}
+									<thead>
+									<tr>
+										{% for field in form.visible_fields %}
+											<th>{{ field.label|capfirst }}</th>
+										{% endfor %}
+									</tr>
+									</thead>
+								{% endif %}
+								<tr class="{% cycle 'row1' 'row2' %} formset_row">
+									{% for field in form.visible_fields %}
+										<td>
+											{# Include the hidden fields in the form #}
+											{% if forloop.first %}
+												{% for hidden in form.hidden_fields %}
+													{{ hidden }}
+												{% endfor %}
+											{% endif %}
+											{{ field.errors.as_ul }}
+											{{ field }}
+										</td>
+									{% endfor %}
+								</tr>
+							{% endfor %}
+						</table>
+						<input type="submit" value="Save"/> <a href="{% url 'documentation-list' %}">back to the list</a>
+					</form>
+				</p>
+			</div>
+  		</div>
+	</div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block script %}
+
+<script src="{% static 'core/js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'add field',
+        deleteText: 'remove',
+        prefix: 'familymember_set'
+    });
+</script>
+
+{% endblock %}

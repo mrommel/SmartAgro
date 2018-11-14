@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
 from django.forms import ModelForm
 from django.contrib import admin
 
@@ -22,7 +22,12 @@ class FieldForm(ModelForm):
 		model = Field
 		fields = ['name', 'area']
 
-DocumentationFieldFormset = modelformset_factory(DocumentationFieldRelation, fields=('field', ), extra=1,)
+class DocumentationFieldRelationForm(ModelForm):
+	class Meta:
+		model = DocumentationFieldRelation
+		exclude = ()
+
+DocumentationFieldRelationFormset = inlineformset_factory(Documentation, DocumentationFieldRelation, form=DocumentationFieldRelationForm, extra=1)
 
 class DocumentationForm(ModelForm):
 	class Meta:

@@ -32,40 +32,6 @@
 	<div class="w3-col m12">
   		<div class="w3-card w3-round w3-white">
 			<div class="w3-container w3-padding">
-				<br/>
-				<img src="{% static 'core/images/person.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:60px">
-				<h4>New documentation</h4>
-				<hr class="w3-clear">
-				<p>
-					<form method="post" enctype="multipart/form-data">
-						{% csrf_token %}
-			
-						{% for field in form %}
-							<p>
-								{{ field.label_tag }}<br>
-								{{ field }}
-								{% if field.help_text %}
-									<small style="color: grey">{{ field.help_text }}</small>
-								{% endif %}
-								{% for error in field.errors %}
-									<p style="color: red">{{ error }}</p>
-								{% endfor %}
-							</p>
-						{% endfor %}
-			
-						<button type="submit">Add documentation</button>
-					</form>
-				</p>
-			</div>
-  		</div>
-	</div>
-</div>
-<br />
-
-<div class="w3-row-padding">
-	<div class="w3-col m12">
-  		<div class="w3-card w3-round w3-white">
-			<div class="w3-container w3-padding">
 	  			<h6 class="w3-opacity">List of documentations</h6>
 	  			<table class="w3-table w3-striped">
 	  				<tr>
@@ -76,7 +42,7 @@
 	  					<th>fields</th>
 	  					<th>Action</th>
 	  				</tr>
-	  				{% for documentation in documentations %}
+	  				{% for documentation in object_list %}
 	  				<tr>
 	  					<td>{{ forloop.counter1 }}</td>
 	  					<td>{{ documentation.date }}</td>
@@ -87,6 +53,7 @@
 	  				</tr>
 	  				{% endfor %}
 	  			</table>
+	  			<a href="{% url 'documentation-add' %}">add a documentation</a>
 			</div>
   		</div>
 	</div>
