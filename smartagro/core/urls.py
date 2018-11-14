@@ -22,9 +22,12 @@ urlpatterns = [
     url(r'^person/edit/(?P<person_id>.+)$', views.person_edit, name='person_edit'),
     
     # fields
+    url(r'^fields$', views.fields, name='fields'),
     
-    url(r'accounts/$', include('accounts.urls')), 
+    # documentations
+    url(r'^documentations$', views.documentations, name='documentations'),
     
+    url(r'accounts/$', include('accounts.urls')),     
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
 ]

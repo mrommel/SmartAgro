@@ -80,9 +80,9 @@
 	  					<td>0</td>
 	  					<td>
 	  						{% if machine.image %}
-	  							<img src="/{{ MEDIA_URL }}..{{ machine.image.url }}" />
+	  							<img src="/{{ MEDIA_URL }}..{{ machine.image.url }}" style="width:40px" />
 	  						{% else %}
-	  							<img src="{% static 'core/images/machine.png' %}" />
+	  							<img src="{% static 'core/images/machine.png' %}" style="width:40px" />
 	  						{% endif %}
 	  					</td>
 	  					<td>{{ machine.name }}</td>

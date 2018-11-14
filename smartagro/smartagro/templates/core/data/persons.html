@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+ 	<ul class="breadcrumbs">
+   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
+   		<li><a href="/core/data">Data</a></li>
+    	<li class="last active"><a href="/core/persons">Persons</a></li>
+  	</ul>
+{% endblock %}
+
+{% block profile %}
+
+<div class="w3-card w3-round w3-white">
+	<div class="w3-container">
+		<h4 class="w3-center">Persons</h4>
+		<h6>Why should I add my persons?</h6>
+		Because it's fun.
+		<br />
+		<br />
+	</div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block content %}
+
+<div class="w3-row-padding">
+	<div class="w3-col m12">
+  		<div class="w3-card w3-round w3-white">
+			<div class="w3-container w3-padding">
+				<br/>
+				<img src="{% static 'core/images/person.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:60px">
+				<h4>New person</h4>
+				<hr class="w3-clear">
+				<p>
+					<form method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+			
+						{% for field in form %}
+							<p>
+								{{ field.label_tag }}<br>
+								{{ field }}
+								{% if field.help_text %}
+									<small style="color: grey">{{ field.help_text }}</small>
+								{% endif %}
+								{% for error in field.errors %}
+									<p style="color: red">{{ error }}</p>
+								{% endfor %}
+							</p>
+						{% endfor %}
+			
+						<button type="submit">Add person</button>
+					</form>
+				</p>
+			</div>
+  		</div>
+	</div>
+</div>
+<br />
+
+<div class="w3-row-padding">
+	<div class="w3-col m12">
+  		<div class="w3-card w3-round w3-white">
+			<div class="w3-container w3-padding">
+	  			<h6 class="w3-opacity">List of persons</h6>
+	  			<p class="w3-border w3-padding">Status: Feeling Blue</p>
+	  			<table class="w3-table w3-striped">
+	  				<tr>
+	  					<th>#</th>
+	  					<th>image</th>
+	  					<th>first name</th>
+	  					<th>last name</th>
+	  					<th>Action</th>
+	  				</tr>
+	  				{% for person in persons %}
+	  				<tr>
+	  					<td>0</td>
+	  					<td>
+	  						{% if person.image %}
+	  							<img src="/{{ MEDIA_URL }}..{{ person.image.url }}" style="width:40px" />
+	  						{% else %}
+	  							<img src="{% static 'core/images/person.png' %}" style="width:40px" />
+	  						{% endif %}
+	  					</td>
+	  					<td>{{ person.first_name }}</td>
+	  					<td>{{ person.last_name }}</td>
+	  					<td><a href="/core/person/detail/{{ person.id }}">Detail</a></td>
+	  				</tr>
+	  				{% endfor %}
+	  			</table>
+			</div>
+  		</div>
+	</div>
+</div>
+
+{% endblock %}

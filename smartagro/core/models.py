@@ -69,3 +69,48 @@ class Person(models.Model):
 	
 	def __unicode__(self):
 		return '%s %s' % (self.first_name, self.last_name)
+		
+class Field(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	name = models.CharField(max_length=64)
+	area = models.IntegerField()
+	
+	def __unicode__(self):
+		return '%s' % (self.name)
+	
+DOCUMENTATION_TYPES = (('W', _('Plowing')), ('S', _('Sowing')), ('H', _('Harvesting')), ('F', _('Fertilization')), ('C', _('Cropcare')), ('P', _('Plantprotect')), )
+	
+class Documentation(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	date = models.DateField()
+	duration = models.IntegerField() # in minutes
+	type = models.CharField(max_length=1, choices=DOCUMENTATION_TYPES)
+	text = models.CharField(max_length=64)
+	
+	#def get_absolute_url(self):
+	#	"""Returns the url to access a particular documentation instance."""
+	#	return reverse('documentation-detail', args=[str(self.id)])
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.date, self.type)
+		
+class DocumentationFieldRelation(models.Model):
+	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
+	field = models.ForeignKey(Field, on_delete=models.CASCADE)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.documentation, self.field)
+	
+class DocumentationMachineRelation(models.Model):
+	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
+	machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.documentation, self.machine)
+	
+class DocumentationPersonRelation(models.Model):
+	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
+	person = models.ForeignKey(Person, on_delete=models.CASCADE)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.documentation, self.person)

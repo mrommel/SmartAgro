@@ -25,6 +25,7 @@ michael.rommel + m.......!
 
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
 https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
+https://www.webforefront.com/django/modelforms.html
 
 # Layout
 
