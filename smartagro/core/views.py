@@ -144,10 +144,12 @@ def fields(request):
 
 class DocumentationList(ListView):
 	model = Documentation
+	template_name = 'core/documentations/documentation_list.html'
 
 class DocumentationFieldCreate(CreateView):
 	model = Documentation
 	fields = ['date', 'duration', 'type']
+	template_name = 'core/documentations/documentation_form.html'
 	success_url = reverse_lazy('documentation-list')
 	
 	def get_context_data(self, **kwargs):
@@ -171,31 +173,3 @@ class DocumentationFieldCreate(CreateView):
 				fields.instance = self.object
 				fields.save()
 		return super(DocumentationFieldCreate, self).form_valid(form)
-	
-def documentations(request):
-	
-	if request.method == 'POST':
-		form = DocumentationForm(request.POST, request.FILES)
-		formset = DocumentationFieldRelationFormset(request.POST)
-		
-		if form.is_valid() and formset.is_valid():
-			documentation = form.save(commit=False)
-			documentation.owner = request.user
-			documentation.save()
-			
-			for form in formset:
-				# so that `book` instance can be attached.
-				documentationFieldRelation = form.save(commit=False)
-				documentationFieldRelation.documentation = documentation
-				documentationFieldRelation.save()
-	else:
-		form = DocumentationForm()
-		formset = DocumentationFieldRelationFormset()
-		
-	documentations = Documentation.objects.all
-	
-	return render(request, 'core/documentations/documentations.html', {
-		'form': form,
-		'formset': formset,
-		'documentations': documentations
-	})
