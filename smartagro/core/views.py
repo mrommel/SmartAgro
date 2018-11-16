@@ -33,56 +33,87 @@ def data(request):
 	--------------------------------------------
 """
 
-def machines(request):
+@method_decorator(login_required, name='dispatch')
+class MachineList(ListView):
+	"""
+		view that displays a list of machines
+		- can be used in templates as {% url 'machine_list' %}
+	"""
+	model = Machine
+	template_name = 'core/data/machine_list.html'
+
+@method_decorator(login_required, name='dispatch')
+class MachineCreate(CreateView):
+	"""
+		view that displays a create new machine form
+		- can be used in templates as {% url 'machine_add' %}
+	"""
+	model = Machine
+	fields = ['name', 'model']
+	template_name = 'core/data/machine_form.html'
+	success_url = reverse_lazy('machine_list')
 	
-	if request.method == 'POST':
-		form = MachineForm(request.POST, request.FILES)
-		if form.is_valid():
+	def get_context_data(self, **kwargs):
+		data = super(MachineCreate, self).get_context_data(**kwargs)
+		return data
+	
+	def form_valid(self, form):
+		with transaction.atomic():
 			machine = form.save(commit=False)
-			machine.owner = request.user
+			machine.owner = self.request.user
 			machine.save()
-	else:
-		form = MachineForm()
+			self.object = machine
+
+		return super(MachineCreate, self).form_valid(form)
 		
-	machines = Machine.objects.all
+@method_decorator(login_required, name='dispatch')
+class MachineDetail(DetailView):
+	"""
+		view that displays a machine 
+		- can be used in templates as {% url 'machine_detail' person.pk %}
+	"""
+	model = Machine
+	pk_url_kwarg = 'machine_id'
+	template_name = 'core/data/machine_detail.html'
 	
-	return render(request, 'core/data/machines.html', {
-		'form': form,
-		'machines': machines
-	})
+	def get_context_data(self, **kwargs):
+		context = super(MachineDetail, self).get_context_data(**kwargs)
+		#context['documentations'] = self.object.documentations()
+		return context
+
+@method_decorator(login_required, name='dispatch')
+class MachineUpdate(UpdateView):
+	"""
+		view that displays an existing machine form
+		- can be used in templates as {% url 'machine_edit' machine.pk %}
+	"""
+	model = Machine
+	pk_url_kwarg = 'machine_id'
+	fields = ['name', 'model']
+	template_name = 'core/data/machine_form.html'
+	success_url = reverse_lazy('machine_list')
 	
-def machine_detail(request, machine_id):
+	def get_context_data(self, **kwargs):
+		data = super(MachineUpdate, self).get_context_data(**kwargs)
+		return data
 	
-	try:
-		machine = Machine.objects.get(pk=machine_id)
-	except Machine.DoesNotExist:
-		raise Http404("Machine does not exist")
-	
-	return render(request, 'core/data/machine_detail.html', {
-		'machine': machine
-	})
-	
-def machine_edit(request, machine_id):
-	
-	try:
-		machine = Machine.objects.get(pk=machine_id)
-	except Machine.DoesNotExist:
-		raise Http404("Machine does not exist")
-	
-	if request.method == "POST":
-		form = MachineForm(request.POST, request.FILES, instance=machine)
-		if form.is_valid():
+	def form_valid(self, form):
+		with transaction.atomic():
 			machine = form.save(commit=False)
-			machine.owner = request.user
-			# do something
+			machine.owner = self.request.user
 			machine.save()
-			return redirect('machine_detail', machine_id=machine.id)
-	else:
-		form = MachineForm(instance=machine)
-	
-	return render(request, 'core/data/machine_edit.html', {
-		'form': form
-	})
+			self.object = machine
+		return super(MachineUpdate, self).form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class MachineDelete(DeleteView):
+	"""
+		view that displays a delete confirmation
+	"""
+	model = Machine
+	pk_url_kwarg = 'machine_id'
+	template_name = 'core/data/machine_confirm_delete.html'
+	success_url = reverse_lazy('machine_list')
 
 """
 	--------------------------------------------
@@ -138,17 +169,6 @@ class PersonDetail(DetailView):
 		context = super(PersonDetail, self).get_context_data(**kwargs)
 		#context['documentations'] = self.object.documentations()
 		return context
-		
-def person_detail(request, person_id):
-	
-	try:
-		person = Person.objects.get(pk=person_id)
-	except Person.DoesNotExist:
-		raise Http404("Person does not exist")
-	
-	return render(request, 'core/data/person_detail.html', {
-		'person': person
-	})
 
 @method_decorator(login_required, name='dispatch')
 class PersonUpdate(UpdateView):
@@ -172,7 +192,7 @@ class PersonUpdate(UpdateView):
 			person.owner = self.request.user
 			person.save()
 			self.object = person
-		return super(FieldUpdate, self).form_valid(form)
+		return super(PersonUpdate, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
 class PersonDelete(DeleteView):

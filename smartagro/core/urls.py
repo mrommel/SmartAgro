@@ -12,9 +12,11 @@ urlpatterns = [
     url(r'^data$', views.data, name='data'),
     
     # machines
-    url(r'^machines$', views.machines, name='machines'),
-    url(r'^machine/detail/(?P<machine_id>.+)$', views.machine_detail, name='machine_detail'),
-    url(r'^machine/edit/(?P<machine_id>.+)$', views.machine_edit, name='machine_edit'),
+    url(r'^machines$', views.MachineList.as_view(), name='machine_list'),
+    url(r'^machine/add$', views.MachineCreate.as_view(), name='machine_add'),
+    url(r'^machine/detail/(?P<machine_id>.+)$', views.MachineDetail.as_view(), name='machine_detail'),
+    url(r'^machine/edit/(?P<machine_id>.+)$', views.MachineUpdate.as_view(), name='machine_edit'),
+    url(r'^machine/delete/(?P<machine_id>.+)$', views.MachineDelete.as_view(), name='machine_delete'),
     
     # persons
     url(r'^persons$', views.PersonList.as_view(), name='person_list'),

@@ -5,10 +5,10 @@
 
 {% block breadcrumbs %}
  	<ul class="breadcrumbs">
-   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
-   		<li><a href="/core/data">Data</a></li>
-    	<li><a href="/core/persons">Persons</a></li>
-    	<li class="last active"><a href="/core/person/detail/{{ person.id }}">{{ person }}</a></li>
+   		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
+   		<li><a href="{% url 'data' %}">Data</a></li>
+    	<li><a href="{% url 'person_list' %}">Persons</a></li>
+    	<li class="last active"><a href="{% url 'person_detail' object.pk %}">{{ person }}</a></li>
   	</ul>
 {% endblock %}
 
@@ -29,15 +29,31 @@
 
 {% block content %}
 
-<div class="w3-container w3-card w3-white w3-round w3-margin">
-	<br/>
-	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-	<h4>Person</h4><br />
-	<hr class="w3-clear">
-	<p>
-		{{ person }}
-	</p>
-	<a href="/core/person/edit/{{ person.id }}">Edit</a>
+<div class="w3-row-padding">
+	<div class="w3-col m12">
+  		<div class="w3-card w3-round w3-white">
+			<div class="w3-container w3-padding">
+				<br/>
+				<img src="{% static 'core/images/person.png' %}" alt="Person" class="w3-left w3-margin-right" style="width:60px">
+				<h4>Person</h4><br />
+				<hr class="w3-clear">
+				<table class="w3-table w3-striped">
+					<tr>
+						<td>First name</td>
+						<td>{{ object.first_name }}</td>
+					</tr>
+					<tr>
+						<td>Last name</td>
+						<td>{{ object.last_name }}</td>
+					</tr>
+				</table>
+				<p>
+					<a href="{% url 'person_edit' object.pk %}" class="w3-button w3-theme-d1">Edit</a>
+					<a href="{% url 'person_delete' object.pk %}" class="w3-button w3-theme-l4">Delete</a>
+				</p>
+			</div>
+		</div>
+	</div>
 </div>
 
 {% endblock %}
