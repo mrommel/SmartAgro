@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
+from operator import attrgetter
 
 """
  Links
@@ -74,6 +75,16 @@ class Field(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	name = models.CharField(max_length=64)
 	area = models.IntegerField()
+	
+	def documentations(self):
+		documentationArray = []
+		
+		for fieldRelation in DocumentationFieldRelation.objects.filter(field = self):
+			documentationArray.append(fieldRelation.documentation)
+		
+		documentationArray = sorted(documentationArray, key=attrgetter('date'), reverse=False)
+		
+		return documentationArray
 	
 	def __unicode__(self):
 		return '%s' % (self.name)

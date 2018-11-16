@@ -22,13 +22,16 @@ urlpatterns = [
     url(r'^person/edit/(?P<person_id>.+)$', views.person_edit, name='person_edit'),
     
     # fields
-    url(r'^fields$', views.fields, name='fields'),
+    url(r'^fields$', views.FieldList.as_view(), name='field_list'),
+    url(r'^field/add$', views.FieldCreate.as_view(), name='field_add'),
+    url(r'^field/detail/(?P<field_id>.+)/$', views.FieldDetail.as_view(), name='field_detail'),
+    url(r'^field/edit/(?P<field_id>.+)$', views.FieldUpdate.as_view(), name='field_edit'),
+    url(r'^field/delete/(?P<field_id>.+)$', views.FieldDelete.as_view(), name='field_delete'),
     
     # documentations
-    #url(r'^documentations$', views.documentations, name='documentations'),
     url(r'^documentations$', views.DocumentationList.as_view(), name='documentation_list'),
     url(r'^documentation/add$', views.DocumentationCreate.as_view(), name='documentation_add'),
-    url(r'^documentation/detail/(?P<documentation_id>.+)/$', views.documentation_detail, name='documentation_detail'),
+    url(r'^documentation/detail/(?P<documentation_id>.+)/$', views.DocumentationDetail.as_view(), name='documentation_detail'),
     url(r'^documentation/edit/(?P<documentation_id>.+)$', views.DocumentationUpdate.as_view(), name='documentation_edit'),
     url(r'^documentation/delete/(?P<documentation_id>.+)$', views.DocumentationDelete.as_view(), name='documentation_delete'),
     

@@ -20,12 +20,12 @@
 <div class="w3-top">
  	<div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   		<a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-  		<a href="/core/index" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>SmartAGRO</a>
-  		<a href="/core/data" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Data">
-  			<img src="{% static 'core/images/data_white.png' %}" style="height:23px;width:23px" alt="Data">
+  		<a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>SmartAGRO</a>
+  		<a href="{% url 'data' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Data">
+  			<img src="{% static 'core/images/data_white.png' %}" style="height:23px;width:23px" alt="Data">&nbsp;Data
   		</a>
-  		<a href="/core/documentations" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Data">
-  			<img src="{% static 'core/images/documentation_white.png' %}" style="height:23px;width:23px" alt="Documentations">
+  		<a href="{% url 'documentation_list' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Data">
+  			<img src="{% static 'core/images/documentation_white.png' %}" style="height:23px;width:23px" alt="Documentations">&nbsp;Documentations
   		</a>
   		<a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
   		<a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
@@ -37,8 +37,8 @@
  	<div class="w3-bar w3-theme-l3 w3-left-align w3-large" style="padding-left: 190px">
  		{% block breadcrumbs %}
  			<ul class="breadcrumbs">
-   				<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
-    			<li class="last active"><a href="/core/index">Home</a></li>
+   				<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
+    			<li class="last active"><a href="{% url 'index' %}">Home</a></li>
   			</ul>
 	  	{% endblock %}
  	</div>

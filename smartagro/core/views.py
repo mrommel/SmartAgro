@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
 from .models import Machine, Person, Field, Documentation, DocumentationFieldRelation
 from .forms import MachineForm, PersonForm, FieldForm, DocumentationForm, DocumentationFieldRelationFormset
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic.detail import DetailView
+from django.utils.decorators import method_decorator
 
 def index(request):
 	
@@ -72,7 +75,15 @@ def machine_edit(request, machine_id):
 	return render(request, 'core/data/machine_edit.html', {
 		'form': form
 	})
+
+"""
+	--------------------------------------------
 	
+	persons
+	
+	--------------------------------------------
+"""
+
 def persons(request):
 	
 	if request.method == 'POST':
@@ -124,29 +135,117 @@ def person_edit(request, person_id):
 		'form': form
 	})
 
-def fields(request):
+"""
+	--------------------------------------------
 	
-	if request.method == 'POST':
-		form = FieldForm(request.POST, request.FILES)
-		if form.is_valid():
-			field = form.save(commit=False)
-			field.owner = request.user
-			field.save()
-	else:
-		form = FieldForm()
-		
-	fields = Field.objects.all
+	fields
 	
-	return render(request, 'core/data/fields.html', {
-		'form': form,
-		'fields': fields
-	})
+	--------------------------------------------
+"""
 
+@method_decorator(login_required, name='dispatch')
+class FieldList(ListView):
+	"""
+		view that displays a list of fields
+	"""
+	model = Field
+	template_name = 'core/data/field_list.html'
+
+@method_decorator(login_required, name='dispatch')
+class FieldCreate(CreateView):
+	"""
+		view that displays a create new field form
+		- can be used in templates as {% url 'field_add' %}
+	"""
+	model = Field
+	fields = ['name', 'area']
+	template_name = 'core/data/field_form.html'
+	success_url = reverse_lazy('field_list')
+	
+	def get_context_data(self, **kwargs):
+		data = super(FieldCreate, self).get_context_data(**kwargs)
+		return data
+	
+	def form_valid(self, form):
+		with transaction.atomic():
+			field = form.save(commit=False)
+			field.owner = self.request.user
+			field.save()
+			self.object = field
+
+		return super(FieldCreate, self).form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class FieldDetail(DetailView):
+	"""
+		view that displays a field 
+		- can be used in templates as {% url 'field_detail' field.pk %}
+	"""
+	model = Field
+	pk_url_kwarg = 'field_id'
+	template_name = 'core/data/field_detail.html'
+	
+	def get_context_data(self, **kwargs):
+		context = super(FieldDetail, self).get_context_data(**kwargs)
+		#context['documentations'] = self.object.documentations()
+		return context
+
+@method_decorator(login_required, name='dispatch')
+class FieldUpdate(UpdateView):
+	"""
+		view that displays an existing field form
+		- can be used in templates as {% url 'field_edit' field.pk %}
+	"""
+	model = Field
+	pk_url_kwarg = 'field_id'
+	fields = ['name', 'area']
+	template_name = 'core/data/field_form.html'
+	success_url = reverse_lazy('field_list')
+	
+	def get_context_data(self, **kwargs):
+		data = super(FieldUpdate, self).get_context_data(**kwargs)
+		return data
+	
+	def form_valid(self, form):
+		with transaction.atomic():
+			field = form.save(commit=False)
+			field.owner = self.request.user
+			field.save()
+			self.object = documentation
+		return super(FieldUpdate, self).form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class FieldDelete(DeleteView):
+	"""
+		view that displays a delete confirmation
+	"""
+	model = Field
+	pk_url_kwarg = 'field_id'
+	template_name = 'core/data/field_confirm_delete.html'
+	success_url = reverse_lazy('field_list')
+
+"""
+	--------------------------------------------
+	
+	documentations
+	
+	--------------------------------------------
+"""
+
+@method_decorator(login_required, name='dispatch')
 class DocumentationList(ListView):
+	"""
+		view that displays a list of documentations
+	"""
 	model = Documentation
 	template_name = 'core/documentations/documentation_list.html'
 
+@method_decorator(login_required, name='dispatch')
 class DocumentationCreate(CreateView):
+	"""
+		view that displays a create new documentation form
+		- can be used in templates as {% url 'documentation_add' %}
+	"""
 	model = Documentation
 	fields = ['date', 'duration', 'type']
 	template_name = 'core/documentations/documentation_form.html'
@@ -173,19 +272,28 @@ class DocumentationCreate(CreateView):
 				fields.instance = self.object
 				fields.save()
 		return super(DocumentationCreate, self).form_valid(form)
-	
-def documentation_detail(request, documentation_id):
 
-	try:
-		documentation = Documentation.objects.get(pk=documentation_id)
-	except Documentation.DoesNotExist:
-		raise Http404("Documentation does not exist")
+@method_decorator(login_required, name='dispatch')
+class DocumentationDetail(DetailView):
+	"""
+		view that displays a documentation 
+		- can be used in templates as {% url 'documentation_detail' documentation.pk %}
+	"""
+	model = Documentation
+	pk_url_kwarg = 'documentation_id'
+	template_name = 'core/documentations/documentation_detail.html'
 	
-	return render(request, 'core/documentations/documentation_detail.html', {
-		'documentation': documentation
-	})
+	def get_context_data(self, **kwargs):
+		context = super(DocumentationDetail, self).get_context_data(**kwargs)
+		#context['now'] = timezone.now()
+		return context
 	
+@method_decorator(login_required, name='dispatch')
 class DocumentationUpdate(UpdateView):
+	"""
+		view that displays an existing documentation form
+		- can be used in templates as {% url 'documentation_edit' documentation.pk %}
+	"""
 	model = Documentation
 	pk_url_kwarg = 'documentation_id'
 	fields = ['date', 'duration', 'type']
@@ -213,8 +321,12 @@ class DocumentationUpdate(UpdateView):
 				fields.instance = self.object
 				fields.save()
 		return super(DocumentationUpdate, self).form_valid(form)
-		
+
+@method_decorator(login_required, name='dispatch')
 class DocumentationDelete(DeleteView):
+	"""
+		view that displays a delete confirmation
+	"""
 	model = Documentation
 	pk_url_kwarg = 'documentation_id'
 	template_name = 'core/documentations/documentation_confirm_delete.html'

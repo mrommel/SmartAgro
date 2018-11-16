@@ -5,8 +5,8 @@
 
 {% block breadcrumbs %}
  	<ul class="breadcrumbs">
-   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
-    	<li class="last active"><a href="/core/data">Data</a></li>
+   		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
+    	<li class="last active"><a href="{% url 'data' %}">Data</a></li>
   	</ul>
 {% endblock %}
 
@@ -36,14 +36,18 @@
 				<h4>Your data</h4><br />
 				<h6>We will help you managing your data. Please add data that you want to use in <a href="/core/documentations">documentations</a>.</h6>
 				<hr class="w3-clear">
-				<p>
-					<img src="{% static 'core/images/field.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px"><a href="/core/fields">Fields</a>
+				<p class="w3-left w3-margin-right">
+					<img src="{% static 'core/images/field.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px">
+					<a href="/core/fields">Fields</a>
 				</p>
-				<p>
-					<img src="{% static 'core/images/machine.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px"><a href="/core/machines">Machines</a>
+				<hr class="w3-clear">
+				<p class="w3-left w3-margin-right">
+					<img src="{% static 'core/images/machine.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px">
+					<a href="/core/machines">Machines</a>
 				</p>
-				<p>
-					<img src="{% static 'core/images/person.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px"><a href="/core/persons">Persons</a>
+				<p class="w3-left w3-margin-right">
+					<img src="{% static 'core/images/person.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px">
+					<a href="/core/persons">Persons</a>
 				</p>
 			</div>
     	</div>

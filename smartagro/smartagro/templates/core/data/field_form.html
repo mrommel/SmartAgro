@@ -6,8 +6,7 @@
 {% block breadcrumbs %}
  	<ul class="breadcrumbs">
    		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
-    	<li><a href="{% url 'documentation_list' %}">Documentations</a></li>
-    	<li class="last active"><a href="{% url 'documentation_detail' object.pk %}">{{ object }}</a></li>
+   		<li class="last active"><a href="{% url 'field_list' %}">Fields</a></li>
   	</ul>
 {% endblock %}
 
@@ -32,18 +31,25 @@
 	<div class="w3-col m12">
   		<div class="w3-card w3-round w3-white">
 			<div class="w3-container w3-padding">
-				<br />
+				<br/>
 				<img src="{% static 'core/images/documentation.png' %}" alt="Documentation" class="w3-left w3-margin-right" style="width:60px">
-				<h4>Documentations</h4>
+				{% if object %}
+					<h4>Edit {{ object }}</h4>
+				{% else %}
+					<h4>New field</h4>
+				{% endif %}
 				<hr class="w3-clear">
-				<form action="" method="post">
-					{% csrf_token %}
-            		<p>Are you sure you want to delete "{{ object }}"?</p>
-            		<input type="submit" class="w3-button w3-theme-d1 w3-margin-bottom" value="Confirm"/> <a class="w3-button w3-theme-d1 w3-margin-bottom" href="{% url 'documentation_detail' object.pk %}">Abbrechen</a>
-        		</form> 
+				<p>
+					<form action="" method="post">
+						{% csrf_token %}
+        				{{ form.as_p }}
+						<input type="submit" value="Save"/> <a href="{% url 'field_list' %}">back to the list</a>
+					</form>
+				</p>
 			</div>
   		</div>
 	</div>
 </div>
+<br />
 
 {% endblock %}
