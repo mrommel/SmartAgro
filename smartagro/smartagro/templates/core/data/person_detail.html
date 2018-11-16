@@ -39,12 +39,12 @@
 				<hr class="w3-clear">
 				<table class="w3-table w3-striped">
 					<tr>
-						<td>First name</td>
-						<td>{{ object.first_name }}</td>
+						<td>Picture</td>
+						<td><img src="{{ object.image.url }}" width="40" /></td>
 					</tr>
 					<tr>
-						<td>Last name</td>
-						<td>{{ object.last_name }}</td>
+						<td>Name</td>
+						<td>{{ object.first_name }} {{ object.last_name }}</td>
 					</tr>
 				</table>
 				<p>

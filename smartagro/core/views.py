@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
-from .models import Machine, Person, Field, Documentation, DocumentationFieldRelation
-from .forms import MachineForm, PersonForm, FieldForm, DocumentationForm, DocumentationFieldRelationFormset
+from .models import Machine, Person, Field, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
+from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
 from django.utils.decorators import method_decorator
@@ -138,7 +138,7 @@ class PersonCreate(CreateView):
 		- can be used in templates as {% url 'person_add' %}
 	"""
 	model = Person
-	fields = ['first_name', 'last_name']
+	fields = ['first_name', 'last_name', 'image']
 	template_name = 'core/data/person_form.html'
 	success_url = reverse_lazy('person_list')
 	
@@ -178,7 +178,7 @@ class PersonUpdate(UpdateView):
 	"""
 	model = Person
 	pk_url_kwarg = 'person_id'
-	fields = ['first_name', 'last_name']
+	fields = ['first_name', 'last_name', 'image']
 	template_name = 'core/data/person_form.html'
 	success_url = reverse_lazy('person_list')
 	
@@ -324,13 +324,21 @@ class DocumentationCreate(CreateView):
 		data = super(DocumentationCreate, self).get_context_data(**kwargs)
 		if self.request.POST:
 			data['fields'] = DocumentationFieldRelationFormset(self.request.POST)
+			data['machines'] = DocumentationMachineRelationFormset(self.request.POST, instance=self.object)
+			data['persons'] = DocumentationPersonRelationFormset(self.request.POST, instance=self.object)
 		else:
 			data['fields'] = DocumentationFieldRelationFormset()
+			data['machines'] = DocumentationMachineRelationFormset(instance=self.object)
+			data['persons'] = DocumentationPersonRelationFormset(instance=self.object)
+			
 		return data
 	
 	def form_valid(self, form):
 		context = self.get_context_data()
 		fields = context['fields']
+		machines = context['machines']
+		persons = context['persons']
+		
 		with transaction.atomic():
 			documentation = form.save(commit=False)
 			documentation.owner = self.request.user
@@ -340,6 +348,15 @@ class DocumentationCreate(CreateView):
 			if fields.is_valid():
 				fields.instance = self.object
 				fields.save()
+			
+			if machines.is_valid():
+				machines.instance = self.object
+				machines.save()
+				
+			if persons.is_valid():
+				persons.instance = self.object
+				persons.save()
+				
 		return super(DocumentationCreate, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
@@ -373,13 +390,21 @@ class DocumentationUpdate(UpdateView):
 		data = super(DocumentationUpdate, self).get_context_data(**kwargs)
 		if self.request.POST:
 			data['fields'] = DocumentationFieldRelationFormset(self.request.POST, instance=self.object)
+			data['machines'] = DocumentationMachineRelationFormset(self.request.POST, instance=self.object)
+			data['persons'] = DocumentationPersonRelationFormset(self.request.POST, instance=self.object)
 		else:
 			data['fields'] = DocumentationFieldRelationFormset(instance=self.object)
+			data['machines'] = DocumentationMachineRelationFormset(instance=self.object)
+			data['persons'] = DocumentationPersonRelationFormset(instance=self.object)
+			
 		return data
 	
 	def form_valid(self, form):
 		context = self.get_context_data()
 		fields = context['fields']
+		machines = context['machines']
+		persons = context['persons']
+		
 		with transaction.atomic():
 			documentation = form.save(commit=False)
 			documentation.owner = self.request.user
@@ -389,6 +414,15 @@ class DocumentationUpdate(UpdateView):
 			if fields.is_valid():
 				fields.instance = self.object
 				fields.save()
+			
+			if machines.is_valid():
+				machines.instance = self.object
+				machines.save()
+				
+			if persons.is_valid():
+				persons.instance = self.object
+				persons.save()
+				
 		return super(DocumentationUpdate, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')

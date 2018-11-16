@@ -58,6 +58,10 @@
 	  					<td>{{ person.last_name }}</td>
 	  					<td><a href="{% url 'person_detail' person.pk %}" class="w3-button w3-theme-d1">Detail</a></td>
 	  				</tr>
+	  				{% empty %}
+	  				<tr>
+	  					<td colspan="5">Oh, no persons so far. Please create one with the link below:</td>
+	  				</tr>
 	  				{% endfor %}
 	  			</table>
 	  			<br />

@@ -109,6 +109,22 @@ class Documentation(models.Model):
 			fieldArray.append(fieldRelation.field)
 		
 		return fieldArray
+		
+	def machines(self):
+		machineArray = []
+		
+		for machineRelation in DocumentationMachineRelation.objects.filter(documentation = self):
+			machineArray.append(machineRelation.machine)
+		
+		return machineArray
+		
+	def persons(self):
+		personArray = []
+		
+		for personRelation in DocumentationPersonRelation.objects.filter(documentation = self):
+			personArray.append(personRelation.person)
+		
+		return personArray
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.date, self.type)

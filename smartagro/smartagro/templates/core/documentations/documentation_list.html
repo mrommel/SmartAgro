@@ -43,6 +43,8 @@
 	  					<th>duration</th>
 	  					<th>type</th>
 	  					<th>fields</th>
+	  					<th>machines</th>
+	  					<th>persons</th>
 	  					<th>Action</th>
 	  				</tr>
 	  				{% for documentation in object_list %}
@@ -56,6 +58,24 @@
 	  						{% for field in documentation.fields %}
 	  							{% if field %}
 									<li>{{ field }}</li>
+								{% endif %}
+							{% endfor %}
+							</ul>
+	  					</td>
+	  					<td>
+	  						<ul>
+	  						{% for machine in documentation.machines %}
+	  							{% if machine %}
+									<li>{{ machine }}</li>
+								{% endif %}
+							{% endfor %}
+							</ul>
+	  					</td>
+	  					<td>
+	  						<ul>
+	  						{% for person in documentation.persons %}
+	  							{% if person %}
+									<li>{{ person }}</li>
 								{% endif %}
 							{% endfor %}
 							</ul>

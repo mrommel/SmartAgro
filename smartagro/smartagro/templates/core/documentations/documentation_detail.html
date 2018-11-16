@@ -35,26 +35,61 @@
 			<div class="w3-container w3-padding">
 				<br />
 				<img src="{% static 'core/images/documentation.png' %}" alt="Documentation" class="w3-left w3-margin-right" style="width:60px">
-				<h4>Documentations</h4>
+				<h4>Documentation</h4>
 				<hr class="w3-clear">
-				<p>{{ documentation }}</p>
-				
-				<h6>Fields</h6>
-				{% for field in documentation.fields %}
-					<p>{{ field }}</p>
-				{% endfor %}
-	  			<table class="w3-table w3-striped">
-	  				<tr>
-	  					<th>#</th>
-	  					<th>date</th>
-	  					<th>duration</th>
-	  					<th>type</th>
-	  					<th>fields</th>
-	  					<th>Action</th>
-	  				</tr>
-	  			</table>
+				<table class="w3-table w3-striped">
+					<tr>
+						<td>Date</td>
+						<td>{{ documentation.date }}</td>
+					</tr>
+					<tr>
+						<td>Duration</td>
+						<td>{{ documentation.duration }} min</td>
+					</tr>
+					<tr>
+						<td>Type</td>
+						<td>{{ documentation.get_type_display }}</td>
+					</tr>
+					<tr>
+						<td>Fields</td>
+						<td>
+							<ul>
+								{% for field in documentation.fields %}
+									{% if field %}
+										<li><a href="{% url 'field_detail' field.pk %}">{{ field }}</a></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>Machines</td>
+						<td>
+							<ul>
+	  							{% for machine in documentation.machines %}
+	  								{% if machine %}
+										<li><a href="{% url 'machine_detail' machine.pk %}">{{ machine }}</a></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td>Persons</td>
+						<td>
+							<ul>
+	  							{% for person in documentation.persons %}
+	  								{% if person %}
+										<li><a href="{% url 'person_detail' person.pk %}">{{ person }}</a></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</td>
+					</tr>
+				</table>
+				<br />
 	  			<a href="{% url 'documentation_edit' documentation.pk %}" class="w3-button w3-theme-d1">Edit</a>
-	  			<a href="{% url 'documentation_delete' documentation.pk %}" class="w3-button w3-theme-d1">Delete?</a>
+	  			<a href="{% url 'documentation_delete' documentation.pk %}" class="w3-button w3-theme-l4">Delete</a>
 			</div>
   		</div>
 	</div>
