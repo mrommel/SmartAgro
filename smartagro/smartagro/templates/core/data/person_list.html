@@ -46,7 +46,7 @@
 	  				</tr>
 	  				{% for person in object_list %}
 	  				<tr>
-	  					<td>{{ forloop.counter1 }}</td>
+	  					<td>{{ forloop.counter }}</td>
 	  					<td>
 	  						{% if person.image %}
 	  							<img src="/{{ MEDIA_URL }}..{{ person.image.url }}" style="width:40px" />
@@ -60,6 +60,8 @@
 	  				</tr>
 	  				{% endfor %}
 	  			</table>
+	  			<br />
+	  			<a href="{% url 'person_add' %}" class="w3-button w3-theme-d1">add a person</a>
 			</div>
   		</div>
 	</div>

@@ -100,6 +100,45 @@ class PersonList(ListView):
 	model = Person
 	template_name = 'core/data/person_list.html'
 
+@method_decorator(login_required, name='dispatch')
+class PersonCreate(CreateView):
+	"""
+		view that displays a create new person form
+		- can be used in templates as {% url 'person_add' %}
+	"""
+	model = Person
+	fields = ['first_name', 'last_name']
+	template_name = 'core/data/person_form.html'
+	success_url = reverse_lazy('person_list')
+	
+	def get_context_data(self, **kwargs):
+		data = super(PersonCreate, self).get_context_data(**kwargs)
+		return data
+	
+	def form_valid(self, form):
+		with transaction.atomic():
+			field = form.save(commit=False)
+			field.owner = self.request.user
+			field.save()
+			self.object = field
+
+		return super(PersonCreate, self).form_valid(form)
+		
+@method_decorator(login_required, name='dispatch')
+class PersonDetail(DetailView):
+	"""
+		view that displays a person 
+		- can be used in templates as {% url 'person_detail' person.pk %}
+	"""
+	model = Person
+	pk_url_kwarg = 'person_id'
+	template_name = 'core/data/person_detail.html'
+	
+	def get_context_data(self, **kwargs):
+		context = super(PersonDetail, self).get_context_data(**kwargs)
+		#context['documentations'] = self.object.documentations()
+		return context
+		
 def person_detail(request, person_id):
 	
 	try:
@@ -111,27 +150,39 @@ def person_detail(request, person_id):
 		'person': person
 	})
 
-def person_edit(request, person_id):
+@method_decorator(login_required, name='dispatch')
+class PersonUpdate(UpdateView):
+	"""
+		view that displays an existing field form
+		- can be used in templates as {% url 'person_edit' person.pk %}
+	"""
+	model = Person
+	pk_url_kwarg = 'person_id'
+	fields = ['first_name', 'last_name']
+	template_name = 'core/data/person_form.html'
+	success_url = reverse_lazy('person_list')
 	
-	try:
-		person = Person.objects.get(pk=person_id)
-	except Person.DoesNotExist:
-		raise Http404("Person does not exist")
+	def get_context_data(self, **kwargs):
+		data = super(PersonUpdate, self).get_context_data(**kwargs)
+		return data
 	
-	if request.method == "POST":
-		form = PersonForm(request.POST, request.FILES, instance=person)
-		if form.is_valid():
+	def form_valid(self, form):
+		with transaction.atomic():
 			person = form.save(commit=False)
-			person.owner = request.user
-			# do something
+			person.owner = self.request.user
 			person.save()
-			return redirect('person_detail', person_id=person.id)
-	else:
-		form = PersonForm(instance=person)
-	
-	return render(request, 'core/data/person_edit.html', {
-		'form': form
-	})
+			self.object = person
+		return super(FieldUpdate, self).form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class PersonDelete(DeleteView):
+	"""
+		view that displays a delete confirmation
+	"""
+	model = Person
+	pk_url_kwarg = 'person_id'
+	template_name = 'core/data/person_confirm_delete.html'
+	success_url = reverse_lazy('person_list')
 
 """
 	--------------------------------------------
@@ -209,7 +260,7 @@ class FieldUpdate(UpdateView):
 			field = form.save(commit=False)
 			field.owner = self.request.user
 			field.save()
-			self.object = documentation
+			self.object = field
 		return super(FieldUpdate, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')

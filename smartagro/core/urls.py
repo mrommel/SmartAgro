@@ -18,8 +18,10 @@ urlpatterns = [
     
     # persons
     url(r'^persons$', views.PersonList.as_view(), name='person_list'),
-    url(r'^person/detail/(?P<person_id>.+)$', views.person_detail, name='person_detail'),
-    url(r'^person/edit/(?P<person_id>.+)$', views.person_edit, name='person_edit'),
+    url(r'^person/add$', views.PersonCreate.as_view(), name='person_add'),
+    url(r'^person/detail/(?P<person_id>.+)$', views.PersonDetail.as_view(), name='person_detail'),
+    url(r'^person/edit/(?P<person_id>.+)$', views.PersonUpdate.as_view(), name='person_edit'),
+    url(r'^person/delete/(?P<person_id>.+)$', views.PersonDelete.as_view(), name='person_delete'),
     
     # fields
     url(r'^fields$', views.FieldList.as_view(), name='field_list'),

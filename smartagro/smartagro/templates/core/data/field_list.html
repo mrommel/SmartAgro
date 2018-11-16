@@ -44,7 +44,7 @@
 	  				</tr>
 	  				{% for field in object_list %}
 	  				<tr>
-	  					<td>{{ forloop.counter1 }}</td>
+	  					<td>{{ forloop.counter }}</td>
 	  					<td>{{ field.name }}</td>
 	  					<td>{{ field.area }}</td>
 	  					<td><a href="{% url 'field_detail' field.pk %}" class="w3-button w3-theme-d1">Detail</a></td>
