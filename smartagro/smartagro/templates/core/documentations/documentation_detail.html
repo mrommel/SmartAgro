@@ -7,7 +7,8 @@
  	<ul class="breadcrumbs">
    		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="/core/data">Data</a></li>
-    	<li class="last active"><a href="{% url 'documentation_list' %}">Documentations</a></li>
+    	<li><a href="{% url 'documentation_list' %}">Documentations</a></li>
+    	<li class="last active"><a href="{% url 'documentation_detail' documentation.pk %}">{{ documentation }}</a></li>
   	</ul>
 {% endblock %}
 
@@ -33,9 +34,15 @@
   		<div class="w3-card w3-round w3-white">
 			<div class="w3-container w3-padding">
 				<br />
-				<img src="{% static 'core/images/documentation.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:60px">
-				<h4>List of documentations</h4>
+				<img src="{% static 'core/images/documentation.png' %}" alt="Documentation" class="w3-left w3-margin-right" style="width:60px">
+				<h4>Documentations</h4>
 				<hr class="w3-clear">
+				<p>{{ documentation }}</p>
+				
+				<h6>Fields</h6>
+				{% for field in documentation.fields %}
+					<p>{{ field }}</p>
+				{% endfor %}
 	  			<table class="w3-table w3-striped">
 	  				<tr>
 	  					<th>#</th>
@@ -45,26 +52,9 @@
 	  					<th>fields</th>
 	  					<th>Action</th>
 	  				</tr>
-	  				{% for documentation in object_list %}
-	  				<tr>
-	  					<td>{{ forloop.counter1 }}</td>
-	  					<td>{{ documentation.date }}</td>
-	  					<td>{{ documentation.duration }}</td>
-	  					<td>{{ documentation.type }}</td>
-	  					<td>
-	  						<ul>
-	  						{% for field in documentation.fields %}
-	  							{% if field %}
-									<li>{{ field }}</li>
-								{% endif %}
-							{% endfor %}
-							</ul>
-	  					</td>
-	  					<td><a href="{% url 'documentation_detail' documentation.pk %}">Detail</a></td>
-	  				</tr>
-	  				{% endfor %}
 	  			</table>
-	  			<a href="{% url 'documentation_add' %}">add a documentation</a>
+	  			<a href="{% url 'documentation_edit' documentation.pk %}">Edit</a>
+	  			<a href="{% url 'documentation_delete' documentation.pk %}">Delete?</a>
 			</div>
   		</div>
 	</div>

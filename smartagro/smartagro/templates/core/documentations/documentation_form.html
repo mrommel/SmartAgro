@@ -7,7 +7,7 @@
  	<ul class="breadcrumbs">
    		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="/core/data">Data</a></li>
-    	<li class="last active"><a href="/core/documentations">Documentations</a></li>
+    	<li class="last active"><a href="{% url 'documentation_list' %}">Documentations</a></li>
   	</ul>
 {% endblock %}
 
@@ -33,8 +33,12 @@
   		<div class="w3-card w3-round w3-white">
 			<div class="w3-container w3-padding">
 				<br/>
-				<img src="{% static 'core/images/documentation.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:60px">
-				<h4>New documentation</h4>
+				<img src="{% static 'core/images/documentation.png' %}" alt="Documentation" class="w3-left w3-margin-right" style="width:60px">
+				{% if object %}
+					<h4>Edit {{ object }}</h4>
+				{% else %}
+					<h4>New documentation</h4>
+				{% endif %}
 				<hr class="w3-clear">
 				<p>
 					<form action="" method="post">
@@ -70,7 +74,7 @@
 								</tr>
 							{% endfor %}
 						</table>
-						<input type="submit" value="Save"/> <a href="{% url 'documentation-list' %}">back to the list</a>
+						<input type="submit" value="Save"/> <a href="{% url 'documentation_list' %}">back to the list</a>
 					</form>
 				</p>
 			</div>

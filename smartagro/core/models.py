@@ -91,6 +91,14 @@ class Documentation(models.Model):
 	#	"""Returns the url to access a particular documentation instance."""
 	#	return reverse('documentation-detail', args=[str(self.id)])
 	
+	def fields(self):
+		fieldArray = []
+	
+		for fieldRelation in DocumentationFieldRelation.objects.filter(documentation = self):
+			fieldArray.append(fieldRelation.field)
+		
+		return fieldArray
+	
 	def __unicode__(self):
 		return '%s - %s' % (self.date, self.type)
 		

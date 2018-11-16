@@ -26,8 +26,11 @@ urlpatterns = [
     
     # documentations
     #url(r'^documentations$', views.documentations, name='documentations'),
-    url(r'^documentations$', views.DocumentationList.as_view(), name='documentation-list'),
-    url(r'^documentation/add$', views.DocumentationFieldCreate.as_view(), name='documentation-add'),
+    url(r'^documentations$', views.DocumentationList.as_view(), name='documentation_list'),
+    url(r'^documentation/add$', views.DocumentationCreate.as_view(), name='documentation_add'),
+    url(r'^documentation/detail/(?P<documentation_id>.+)/$', views.documentation_detail, name='documentation_detail'),
+    url(r'^documentation/edit/(?P<documentation_id>.+)$', views.DocumentationUpdate.as_view(), name='documentation_edit'),
+    url(r'^documentation/delete/(?P<documentation_id>.+)$', views.DocumentationDelete.as_view(), name='documentation_delete'),
     
     url(r'accounts/$', include('accounts.urls')),     
     url(r'^login/$', auth_views.login, name='login'),

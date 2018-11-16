@@ -146,14 +146,14 @@ class DocumentationList(ListView):
 	model = Documentation
 	template_name = 'core/documentations/documentation_list.html'
 
-class DocumentationFieldCreate(CreateView):
+class DocumentationCreate(CreateView):
 	model = Documentation
 	fields = ['date', 'duration', 'type']
 	template_name = 'core/documentations/documentation_form.html'
-	success_url = reverse_lazy('documentation-list')
+	success_url = reverse_lazy('documentation_list')
 	
 	def get_context_data(self, **kwargs):
-		data = super(DocumentationFieldCreate, self).get_context_data(**kwargs)
+		data = super(DocumentationCreate, self).get_context_data(**kwargs)
 		if self.request.POST:
 			data['fields'] = DocumentationFieldRelationFormset(self.request.POST)
 		else:
@@ -172,4 +172,52 @@ class DocumentationFieldCreate(CreateView):
 			if fields.is_valid():
 				fields.instance = self.object
 				fields.save()
-		return super(DocumentationFieldCreate, self).form_valid(form)
+		return super(DocumentationCreate, self).form_valid(form)
+	
+def documentation_detail(request, documentation_id):
+
+	try:
+		documentation = Documentation.objects.get(pk=documentation_id)
+	except Documentation.DoesNotExist:
+		raise Http404("Documentation does not exist")
+	
+	return render(request, 'core/documentations/documentation_detail.html', {
+		'documentation': documentation
+	})
+	
+class DocumentationUpdate(UpdateView):
+	model = Documentation
+	pk_url_kwarg = 'documentation_id'
+	fields = ['date', 'duration', 'type']
+	template_name = 'core/documentations/documentation_form.html'
+	success_url = reverse_lazy('documentation_list')
+	
+	def get_context_data(self, **kwargs):
+		data = super(DocumentationUpdate, self).get_context_data(**kwargs)
+		if self.request.POST:
+			data['fields'] = DocumentationFieldRelationFormset(self.request.POST, instance=self.object)
+		else:
+			data['fields'] = DocumentationFieldRelationFormset(instance=self.object)
+		return data
+	
+	def form_valid(self, form):
+		context = self.get_context_data()
+		fields = context['fields']
+		with transaction.atomic():
+			documentation = form.save(commit=False)
+			documentation.owner = self.request.user
+			documentation.save()
+			self.object = documentation
+			
+			if fields.is_valid():
+				fields.instance = self.object
+				fields.save()
+		return super(DocumentationUpdate, self).form_valid(form)
+		
+class DocumentationDelete(DeleteView):
+	model = Documentation
+	pk_url_kwarg = 'documentation_id'
+	template_name = 'core/documentations/documentation_confirm_delete.html'
+	success_url = reverse_lazy('documentation_list')
+	
+
