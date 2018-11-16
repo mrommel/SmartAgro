@@ -39,7 +39,7 @@
 				<form action="" method="post">
 					{% csrf_token %}
             		<p>Are you sure you want to delete "{{ object }}"?</p>
-            		<input type="submit" class="w3-button w3-theme-d1 w3-margin-bottom" value="Confirm"/> <a class="w3-button w3-theme-d1 w3-margin-bottom" href="{% url 'field_detail' object.pk %}">Abbrechen</a>
+            		<input type="submit" class="w3-button w3-theme-d1" value="Confirm"/> <a href="{% url 'field_detail' object.pk %}" class="w3-button w3-theme-d1">Abbrechen</a>
         		</form> 
 			</div>
   		</div>

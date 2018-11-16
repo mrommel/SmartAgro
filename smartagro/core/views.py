@@ -25,6 +25,14 @@ def data(request):
 		'machines': 'machines',
 	})
 
+"""
+	--------------------------------------------
+	
+	machines
+	
+	--------------------------------------------
+"""
+
 def machines(request):
 	
 	if request.method == 'POST':
@@ -84,23 +92,13 @@ def machine_edit(request, machine_id):
 	--------------------------------------------
 """
 
-def persons(request):
-	
-	if request.method == 'POST':
-		form = PersonForm(request.POST, request.FILES)
-		if form.is_valid():
-			person = form.save(commit=False)
-			person.owner = request.user
-			person.save()
-	else:
-		form = PersonForm()
-		
-	persons = Person.objects.all
-	
-	return render(request, 'core/data/persons.html', {
-		'form': form,
-		'persons': persons
-	})
+@method_decorator(login_required, name='dispatch')
+class PersonList(ListView):
+	"""
+		view that displays a list of persons
+	"""
+	model = Person
+	template_name = 'core/data/person_list.html'
 
 def person_detail(request, person_id):
 	

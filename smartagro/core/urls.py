@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^machine/edit/(?P<machine_id>.+)$', views.machine_edit, name='machine_edit'),
     
     # persons
-    url(r'^persons$', views.persons, name='persons'),
+    url(r'^persons$', views.PersonList.as_view(), name='person_list'),
     url(r'^person/detail/(?P<person_id>.+)$', views.person_detail, name='person_detail'),
     url(r'^person/edit/(?P<person_id>.+)$', views.person_edit, name='person_edit'),
     
