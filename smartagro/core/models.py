@@ -11,6 +11,12 @@ from operator import attrgetter
  https://wsvincent.com/django-referencing-the-user-model/
 """
 
+"""
+--------------------------------------------------------------
+	user related data
+--------------------------------------------------------------
+"""
+
 class Manufacturer(models.Model):
 	name = models.CharField(max_length=64)
 	description = models.CharField(max_length=512, null=True, blank=True)
@@ -32,7 +38,57 @@ class Model(models.Model):
 	
 	def __unicode__(self):
 		return '%s' % (self.name)
+
+FERTILIZER_TYPES = (('O', _('Organic')), ('M', _('Mineralic')))
+
+class Fertilizer(models.Model):
+	name = models.CharField(max_length=64)
+	type = models.CharField(max_length=1, choices=FERTILIZER_TYPES)
 	
+	def __unicode__(self):
+		return '%s' % (self.name)
+
+class CultureType(models.Model):
+	name = models.CharField(max_length=64)
+	abbreviation = models.CharField(max_length=2)
+	
+	def __unicode__(self):
+		return '%s' % (self.name)
+		
+class Culture(models.Model):
+	name = models.CharField(max_length=64)
+	type = models.ForeignKey(CultureType)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.name, self.type.name)
+
+class Seed(models.Model):
+	name = models.CharField(max_length=64)
+	culture = models.ForeignKey(Culture)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.name, self.culture.name)
+
+class PlantprotectantCategory(models.Model):
+	name = models.CharField(max_length=64)
+	
+	def __unicode__(self):
+		return '%s' % (self.name)
+	
+class Plantprotectant(models.Model):
+	name = models.CharField(max_length=64)
+	category = models.ForeignKey(PlantprotectantCategory, null=True, blank=True) # remove nullability
+	valid_cultures = models.ManyToManyField(Culture, null=True, blank=True)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.name, self.category.name)
+
+"""
+--------------------------------------------------------------
+	user related data
+--------------------------------------------------------------
+"""
+
 class Machine(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	name = models.CharField(max_length=64)
@@ -96,7 +152,7 @@ class Documentation(models.Model):
 	date = models.DateField()
 	duration = models.IntegerField() # in minutes
 	type = models.CharField(max_length=1, choices=DOCUMENTATION_TYPES)
-	text = models.CharField(max_length=64)
+	comments = models.CharField(max_length=64)
 	
 	#def get_absolute_url(self):
 	#	"""Returns the url to access a particular documentation instance."""
