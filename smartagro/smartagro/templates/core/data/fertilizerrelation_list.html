@@ -45,7 +45,14 @@
 	  				{% for fertilizer in object_list %}
 	  				<tr>
 	  					<td>{{ forloop.counter }}</td>
-	  					<td>{{ fertilizer.active }}</td>
+	  					<td>
+	  						{# fertilizer.active #}
+	  						<!-- Rounded switch -->
+							<label class="switch">
+								<input type="checkbox" name="active">
+								<span class="slider round"></span>
+							</label>
+	  					</td>
 	  					<td>{{ fertilizer.fertilizer.name }}</td>
 	  					<td></td>
 	  				</tr>
@@ -57,5 +64,11 @@
   		</div>
 	</div>
 </div>
+
+{% endblock %}
+
+{% block script %}
+
+<link rel="stylesheet" href="{% static 'core/css/sliders.css' %}">
 
 {% endblock %}

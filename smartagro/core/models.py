@@ -5,10 +5,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from operator import attrgetter
+from django.core.urlresolvers import reverse
 
 """
- Links
- https://wsvincent.com/django-referencing-the-user-model/
+ 	Links
+	* https://wsvincent.com/django-referencing-the-user-model/
 """
 
 """
@@ -162,9 +163,11 @@ class Documentation(models.Model):
 	type = models.CharField(max_length=1, choices=DOCUMENTATION_TYPES)
 	comments = models.CharField(max_length=64)
 	
-	#def get_absolute_url(self):
-	#	"""Returns the url to access a particular documentation instance."""
-	#	return reverse('documentation-detail', args=[str(self.id)])
+	def get_absolute_url(self):
+		"""
+			Returns the url to access a particular documentation instance.
+		"""
+		return reverse('documentation_detail', args=[str(self.id)])
 	
 	def fields(self):
 		fieldArray = []

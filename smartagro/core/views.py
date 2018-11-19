@@ -308,6 +308,20 @@ class FertilizerList(ListView):
 	"""
 	model = FertilizerRelation
 	template_name = 'core/data/fertilizerrelation_list.html'
+	
+def fertilizer_activate(request, fertilizer_id):
+	
+	try:
+		fertilizerRelation = FertilizerRelation.objects.get(pk=fertilizer_id)
+	except FertilizerRelation.DoesNotExist:
+		raise Http404("FertilizerRelation does not exist")
+	
+	if self.request.POST:
+		pass
+	
+	return render(request, 'core/data/data.html', {
+		'fertilizerRelation': 'fertilizerRelation',
+	})
 
 """
 	--------------------------------------------

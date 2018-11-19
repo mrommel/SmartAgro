@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from core.models import Manufacturer, Model, Fertilizer, Plantprotectant, PlantprotectantCategory, CultureType, Culture, Seed, Machine, Person, Field
+from core.models import Manufacturer, Model, Fertilizer, Plantprotectant, PlantprotectantCategory, CultureType, Culture, Seed, Machine, Person, Field, FertilizerRelation
 
 # Register your models here.
 
@@ -20,3 +20,4 @@ admin.site.register(Seed)
 admin.site.register(Machine)
 admin.site.register(Person)
 admin.site.register(Field)
+admin.site.register(FertilizerRelation)
