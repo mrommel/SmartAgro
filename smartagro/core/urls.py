@@ -32,6 +32,10 @@ urlpatterns = [
     url(r'^field/edit/(?P<field_id>.+)$', views.FieldUpdate.as_view(), name='field_edit'),
     url(r'^field/delete/(?P<field_id>.+)$', views.FieldDelete.as_view(), name='field_delete'),
     
+    # fertilizer
+     url(r'^fertilizers$', views.FertilizerList.as_view(), name='fertilizer_list'),
+     url(r'^fertilizer_add$', views.FertilizerList.as_view(), name='fertilizer_add'),
+    
     # documentations
     url(r'^documentations$', views.DocumentationList.as_view(), name='documentation_list'),
     url(r'^documentation/add$', views.DocumentationCreate.as_view(), name='documentation_add'),

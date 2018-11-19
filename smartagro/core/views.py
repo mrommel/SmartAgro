@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
-from .models import Machine, Person, Field, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
+from .models import Machine, Person, Field, FertilizerRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
 from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
@@ -292,6 +292,22 @@ class FieldDelete(DeleteView):
 	pk_url_kwarg = 'field_id'
 	template_name = 'core/data/field_confirm_delete.html'
 	success_url = reverse_lazy('field_list')
+
+"""
+	--------------------------------------------
+	
+	fertilizer
+	
+	--------------------------------------------
+"""
+
+@method_decorator(login_required, name='dispatch')
+class FertilizerList(ListView):
+	"""
+		view that displays a list of fertilizer relations
+	"""
+	model = FertilizerRelation
+	template_name = 'core/data/fertilizerrelation_list.html'
 
 """
 	--------------------------------------------

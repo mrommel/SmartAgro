@@ -145,6 +145,14 @@ class Field(models.Model):
 	def __unicode__(self):
 		return '%s' % (self.name)
 	
+class FertilizerRelation(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	fertilizer = models.ForeignKey(Fertilizer)
+	active = models.NullBooleanField(default=False)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.fertilizer.name, self.active)
+	
 DOCUMENTATION_TYPES = (('W', _('Plowing')), ('S', _('Sowing')), ('H', _('Harvesting')), ('F', _('Fertilization')), ('C', _('Cropcare')), ('P', _('Plantprotect')), )
 	
 class Documentation(models.Model):
