@@ -70,16 +70,16 @@ class Seed(models.Model):
 	def __unicode__(self):
 		return '%s - %s' % (self.name, self.culture.name)
 
-class PlantprotectantCategory(models.Model):
+class PlantProtectantCategory(models.Model):
 	name = models.CharField(max_length=64)
 	
 	def __unicode__(self):
 		return '%s' % (self.name)
 	
-class Plantprotectant(models.Model):
+class PlantProtectant(models.Model):
 	name = models.CharField(max_length=64)
-	category = models.ForeignKey(PlantprotectantCategory, null=True, blank=True) # remove nullability
-	valid_cultures = models.ManyToManyField(Culture, null=True, blank=True)
+	category = models.ForeignKey(PlantProtectantCategory)
+	valid_cultures = models.ManyToManyField(Culture)
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.name, self.category.name)
@@ -153,14 +153,32 @@ class FertilizerRelation(models.Model):
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.fertilizer.name, self.active)
+		
+class SeedRelation(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	seed = models.ForeignKey(Seed)
+	active = models.NullBooleanField(default=False)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.seed.name, self.active)
+		
+class PlantProtectantRelation(models.Model):
+	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	plantProtectant = models.ForeignKey(PlantProtectant)
+	active = models.NullBooleanField(default=False)
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.plantProtectant.name, self.active)
 	
 DOCUMENTATION_TYPES = (('W', _('Plowing')), ('S', _('Sowing')), ('H', _('Harvesting')), ('F', _('Fertilization')), ('C', _('Cropcare')), ('P', _('Plantprotect')), )
-	
+DOCUMENTATION_STATUS = (('P', _('Planned')), ('S', _('Saved')), ('B', _('Booked')))
+
 class Documentation(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	date = models.DateField()
 	duration = models.IntegerField() # in minutes
 	type = models.CharField(max_length=1, choices=DOCUMENTATION_TYPES)
+	status = models.CharField(max_length=1, choices=DOCUMENTATION_STATUS)
 	comments = models.CharField(max_length=64)
 	
 	def get_absolute_url(self):

@@ -6,10 +6,13 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
 from .models import Machine, Person, Field, FertilizerRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
-from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset
+from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset, FertilizerActivationForm
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_http_methods
+from django.http import HttpResponse
+from django.http import JsonResponse
 
 def index(request):
 	
@@ -308,20 +311,27 @@ class FertilizerList(ListView):
 	"""
 	model = FertilizerRelation
 	template_name = 'core/data/fertilizerrelation_list.html'
+
+@require_http_methods(['POST'])
+def fertilizer_activate(request):
+		
+	form = FertilizerActivationForm(request.POST)
+	if form.is_valid():
+		return JsonResponse({"message":"form is submitted"}, status=201)
 	
-def fertilizer_activate(request, fertilizer_id):
+	return JsonResponse({"error":"invalid input"}, status=400)
+	#user = request.user
+	#	
+	#try:
+	#	fertilizerRelation = FertilizerRelation.objects.get(pk=fertilizer_id, owner=user)
+	#except FertilizerRelation.DoesNotExist:
+	#	raise Http404("FertilizerRelation does not exist")
 	
-	try:
-		fertilizerRelation = FertilizerRelation.objects.get(pk=fertilizer_id)
-	except FertilizerRelation.DoesNotExist:
-		raise Http404("FertilizerRelation does not exist")
+	#if request.POST:
+	#	fertilizerRelation.active = active
+	#	fertilizerRelation.save()
 	
-	if self.request.POST:
-		pass
-	
-	return render(request, 'core/data/data.html', {
-		'fertilizerRelation': 'fertilizerRelation',
-	})
+	#return HttpResponse('')
 
 """
 	--------------------------------------------

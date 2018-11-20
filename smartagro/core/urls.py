@@ -1,7 +1,6 @@
 from django.conf.urls import include, url
 
 from . import views
-from django.contrib.auth import views as auth_views
 
 #app_name = 'core'
 urlpatterns = [
@@ -33,8 +32,9 @@ urlpatterns = [
     url(r'^field/delete/(?P<field_id>.+)$', views.FieldDelete.as_view(), name='field_delete'),
     
     # fertilizer
-     url(r'^fertilizers$', views.FertilizerList.as_view(), name='fertilizer_list'),
-     url(r'^fertilizer_add$', views.FertilizerList.as_view(), name='fertilizer_add'),
+    url(r'^fertilizers$', views.FertilizerList.as_view(), name='fertilizer_list'),
+    url(r'^fertilizer_activate$', views.fertilizer_activate, name='fertilizer_activate'),
+    #url(r'^fertilizer_add$', views.FertilizerList.as_view(), name='fertilizer_add'),
     
     # documentations
     url(r'^documentations$', views.DocumentationList.as_view(), name='documentation_list'),
@@ -43,7 +43,5 @@ urlpatterns = [
     url(r'^documentation/edit/(?P<documentation_id>.+)$', views.DocumentationUpdate.as_view(), name='documentation_edit'),
     url(r'^documentation/delete/(?P<documentation_id>.+)$', views.DocumentationDelete.as_view(), name='documentation_delete'),
     
-    url(r'accounts/$', include('accounts.urls')),     
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^accounts/', include('accounts.urls')),     
 ]

@@ -49,9 +49,26 @@
 	  						{# fertilizer.active #}
 	  						<!-- Rounded switch -->
 							<label class="switch">
-								<input type="checkbox" name="active">
+								<input type="checkbox" name="active" id="toggle-{{ fertilizer.id }}">
 								<span class="slider round"></span>
 							</label>
+							<script type="text/javascript">
+								$("#toggle-{{ fertilizer.id }}").click(function() {
+									event.preventDefault();
+									$.ajax({
+										url : "{% url 'fertilizer_activate' %}", // the endpoint
+										type : "POST", // http method
+										data : { fertilizer_id : {{ fertilizer.id }},
+												 activated : 1},
+										success : function(json, textMsg, xhr) {
+											alert('AJAX called successfully')
+										},
+										error : function(xhr,errmsg,err) {
+											alert("Opps! Something's wrong!")
+										}
+									});
+								});
+							</script>
 	  					</td>
 	  					<td>{{ fertilizer.fertilizer.name }}</td>
 	  					<td></td>
@@ -59,7 +76,6 @@
 	  				{% endfor %}
 	  			</table>
 	  			<br />
-	  			<a href="{% url 'fertilizer_add' %}" class="w3-button w3-theme-d1">add a fertilizer</a>
 			</div>
   		</div>
 	</div>

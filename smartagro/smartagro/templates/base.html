@@ -14,6 +14,41 @@
 	<link rel="stylesheet" href="{% static 'core/css/font-awesome.min.css' %}">
 	<link rel="stylesheet" href="{% static 'core/css/breadcrumbs.css' %}">
 
+	<script type="text/javascript" src="{% static 'core/js/jquery-3.3.1.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/breadcrumbs.js' %}"></script>
+	<script type="text/javascript" src="{% static 'core/js/core.js' %}"></script>
+	
+	<script type="text/javascript">
+	{# This snippet is provided in Django official documentation #}
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+	</script>
+
 <body class="w3-theme-l5">
 
 <!-- Navbar -->
@@ -69,24 +104,7 @@
           <div id="Demo3" class="w3-hide w3-container">
          <div class="w3-row-padding">
          <br>
-           <div class="w3-half">
-             <img src="/w3images/lights.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/mountains.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/forest.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/nature.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
-           <div class="w3-half">
-             <img src="/w3images/snow.jpg" style="width:100%" class="w3-margin-bottom">
-           </div>
+           abcb
          </div>
           </div>
         </div>      
@@ -147,24 +165,7 @@
         </div>
       </div>
       <br>
-      
-      <div class="w3-card w3-round w3-white w3-center">
-        <div class="w3-container">
-          <p>Friend Request</p>
-          <img src="/w3images/avatar6.png" alt="Avatar" style="width:50%"><br>
-          <span>Jane Doe</span>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Accept"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline"><i class="fa fa-remove"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br>
-      
+
       <div class="w3-card w3-round w3-white w3-padding-16 w3-center">
         <p>ADS</p>
       </div>
@@ -193,9 +194,6 @@
   <p>Powered by <a href="#" target="_blank">MiRoSoft</a></p>
 </footer>
 
-<script type="text/javascript" src="{% static 'core/js/jquery-3.3.1.js' %}"></script>
-<script type="text/javascript" src="{% static 'core/js/breadcrumbs.js' %}"></script>
-<script type="text/javascript" src="{% static 'core/js/core.js' %}"></script>
 
 {% block script %}
 {% endblock %}
