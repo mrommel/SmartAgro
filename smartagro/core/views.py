@@ -317,9 +317,9 @@ def fertilizer_activate(request):
 		
 	form = FertilizerActivationForm(request.POST)
 	if form.is_valid():
-		return JsonResponse({"message":"form is submitted"}, status=201)
+		return JsonResponse({"message": "form is submitted: %s - %s" % (form.cleaned_data.get('fertilizer_id'), form.cleaned_data.get('activated'))}, status=201)
 	
-	return JsonResponse({"error":"invalid input"}, status=400)
+	return JsonResponse({"error": "invalid input"}, status=400)
 	#user = request.user
 	#	
 	#try:

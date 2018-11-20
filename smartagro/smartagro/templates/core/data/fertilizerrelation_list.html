@@ -61,7 +61,7 @@
 										data : { fertilizer_id : {{ fertilizer.id }},
 												 activated : 1},
 										success : function(json, textMsg, xhr) {
-											alert('AJAX called successfully')
+											alert('AJAX called successfully: ' + json['message'])
 										},
 										error : function(xhr,errmsg,err) {
 											alert("Opps! Something's wrong!")

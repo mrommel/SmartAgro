@@ -96,18 +96,27 @@ class Machine(models.Model):
 	model = models.ForeignKey(Model, on_delete=models.CASCADE, null=True, blank=True)
 	image = models.ImageField(upload_to='media/machines', blank=True, null=True)
 	
-	# preset from model
+	# preset from model (can be changed)
 	type = models.CharField(max_length=1, choices=MACHINE_TYPES)
 	horsepower = models.IntegerField(null=True, blank=True)
 	volume = models.IntegerField(null=True, blank=True)
 	width = models.IntegerField(null=True, blank=True)
 	
 	def thumbnail(self):
+		"""
+			Returns an extendable version of the 'image' of this machine as html or a default image
+		"""
 		if self.image.name is not None and self.image.name <> '':
 			return '<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name))
 		else:
-			return '<img border="0" alt="" src="/static/data/images/Person-icon-grey.JPG" height="40" />'
+			return '<img border="0" alt="" src="/static/core/images/machine-icon-grey.JPG" height="40" />'
 	thumbnail.allow_tags = True
+	
+	def get_absolute_url(self):
+		"""
+			Returns the url to access a particular machine instance.
+		"""
+		return reverse('machine_detail', args=[str(self.id)])
 	
 	def __unicode__(self):
 		return '%s' % (self.name)
@@ -119,11 +128,20 @@ class Person(models.Model):
 	image = models.ImageField(upload_to='media/persons', blank=True, null=True)
 	
 	def thumbnail(self):
+		"""
+			Returns an extendable version of the 'image' of this person as html or a default image
+		"""
 		if self.image.name is not None and self.image.name <> '':
 			return '<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name))
 		else:
-			return '<img border="0" alt="" src="/static/data/images/Person-icon-grey.JPG" height="40" />'
+			return '<img border="0" alt="" src="/static/core/images/person-icon-grey.JPG" height="40" />'
 	thumbnail.allow_tags = True
+	
+	def get_absolute_url(self):
+		"""
+			Returns the url to access a particular person instance.
+		"""
+		return reverse('person_detail', args=[str(self.id)])
 	
 	def __unicode__(self):
 		return '%s %s' % (self.first_name, self.last_name)
@@ -134,6 +152,10 @@ class Field(models.Model):
 	area = models.IntegerField()
 	
 	def documentations(self):
+		"""
+			Returns the documentations that happend on that field
+			- ordered by date
+		"""
 		documentationArray = []
 		
 		for fieldRelation in DocumentationFieldRelation.objects.filter(field = self):
@@ -143,8 +165,14 @@ class Field(models.Model):
 		
 		return documentationArray
 	
+	def get_absolute_url(self):
+		"""
+			Returns the url to access a particular field instance.
+		"""
+		return reverse('field_detail', args=[str(self.id)])
+	
 	def __unicode__(self):
-		return '%s' % (self.name)
+		return '%s - %d ha' % (self.name, self.area)
 	
 class FertilizerRelation(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
