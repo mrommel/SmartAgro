@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block profile %}
+
+<div class="w3-card w3-round w3-white">
+	<div class="w3-container">
+		<h4 class="w3-center">Registration</h4>
+		<h6>Why should I register?</h6>
+		It's because it's fun.
+		<br />
+		<br />
+	</div>
+</div>
+<br />
+
+{% endblock %}
+
+{% block content %}
+
+<div class="w3-container w3-card w3-white w3-round w3-margin">
+	<br/>
+	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+	<h4>Profile</h4><br />
+	<hr class="w3-clear">
+	<p>
+		<form method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Save</button>
+		</form>
+	</p>
+</div>
+
+<div class="w3-row-padding">
+	<div class="w3-col m12">
+		<div class="w3-card w3-round w3-white">
+            <div class="w3-container w3-padding">
+              	<h6 class="w3-opacity">Please login or register here</h6>
+              	<p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
+             	<button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post</button> 
+            </div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

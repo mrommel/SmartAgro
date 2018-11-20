@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # accounts/views.py
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import render, redirect
@@ -20,3 +20,10 @@ def signup(request):
 		form = UserCreationForm()
 		
 	return render(request, 'accounts/signup.html', {'form': form})
+	
+def profile(request):
+
+	form = UserChangeForm(instance=request.user)
+	return render(request, 'accounts/profile.html', {
+		'form': form
+	})
