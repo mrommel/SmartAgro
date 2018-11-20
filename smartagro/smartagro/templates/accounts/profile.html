@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+ 	<ul class="breadcrumbs">
+   		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
+    	<li class="last active"><a href="{% url 'profile' %}">Profile</a></li>
+  	</ul>
+{% endblock %}
+
 {% block profile %}
 
 <div class="w3-card w3-round w3-white">
@@ -17,28 +27,22 @@
 
 {% block content %}
 
-<div class="w3-container w3-card w3-white w3-round w3-margin">
-	<br/>
-	<img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-	<h4>Profile</h4><br />
-	<hr class="w3-clear">
-	<p>
-		<form method="post">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit">Save</button>
-		</form>
-	</p>
-</div>
-
 <div class="w3-row-padding">
 	<div class="w3-col m12">
-		<div class="w3-card w3-round w3-white">
-            <div class="w3-container w3-padding">
-              	<h6 class="w3-opacity">Please login or register here</h6>
-              	<p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-             	<button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post</button> 
-            </div>
+  		<div class="w3-card w3-round w3-white">
+			<div class="w3-container w3-padding">
+				<br/>
+				<img src="{% static 'core/images/avatar.png' %}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+				<h4>Profile</h4><br />
+				<hr class="w3-clear">
+				<p>
+					<form method="post">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<button type="submit">Save</button>
+					</form>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>
