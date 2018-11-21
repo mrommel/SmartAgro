@@ -317,7 +317,19 @@ def fertilizer_activate(request):
 		
 	form = FertilizerActivationForm(request.POST)
 	if form.is_valid():
-		return JsonResponse({"message": "form is submitted: %s - %s" % (form.cleaned_data.get('fertilizer_id'), form.cleaned_data.get('activated'))}, status=201)
+		fertilizer_id = form.cleaned_data.get('fertilizer_id')
+		activated = form.cleaned_data.get('activated')
+		user = request.user
+		
+		try:
+			fertilizerRelation = FertilizerRelation.objects.get(pk=fertilizer_id, owner=user)
+			fertilizerRelation.active = activated
+			fertilizerRelation.save()
+		except FertilizerRelation.DoesNotExist:
+			raise Http404("FertilizerRelation does not exist")
+		
+		return JsonResponse({"message": "form: %s - %s" % (fertilizerRelation.fertilizer.id, activated)}, status=201)
+		#return JsonResponse({"message": "form is submitted: %s - %s" % (fertilizer_id, activated)}, status=201)
 	
 	return JsonResponse({"error": "invalid input"}, status=400)
 	#user = request.user

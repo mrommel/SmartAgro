@@ -42,7 +42,7 @@ input:checked + .slider {
   background-color: #3a4b53;
 }
 
-input:focus + .slider {
+input + .slider {
   box-shadow: 0 0 1px #3a4b53;
 }
 

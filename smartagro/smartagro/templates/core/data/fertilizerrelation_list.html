@@ -6,7 +6,8 @@
 {% block breadcrumbs %}
  	<ul class="breadcrumbs">
    		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
-    	<li class="last active"><a href="{% url 'field_list' %}">Fields</a></li>
+   		<li><a href="{% url 'data' %}">Data</a></li>
+    	<li class="last active"><a href="{% url 'fertilizer_list' %}">Fertilizers</a></li>
   	</ul>
 {% endblock %}
 
@@ -38,40 +39,37 @@
 	  			<table class="w3-table w3-striped">
 	  				<tr>
 	  					<th>#</th>
-	  					<th>active</th>
 	  					<th>fertilizer</th>
-	  					<th>Action</th>
+	  					<th>type</th>
+	  					<th>active</th>
 	  				</tr>
 	  				{% for fertilizer in object_list %}
 	  				<tr>
 	  					<td>{{ forloop.counter }}</td>
+	  					<td>{{ fertilizer.fertilizer.name }}</td>
+	  					<td>{{ fertilizer.fertilizer.get_type_display }}</td>
 	  					<td>
-	  						{# fertilizer.active #}
-	  						<!-- Rounded switch -->
 							<label class="switch">
-								<input type="checkbox" name="active" id="toggle-{{ fertilizer.id }}">
+								<input type="checkbox" name="active" id="toggle-{{ fertilizer.id }}" {% if fertilizer.active %}checked="checked"{% endif %} >
 								<span class="slider round"></span>
 							</label>
 							<script type="text/javascript">
 								$("#toggle-{{ fertilizer.id }}").click(function() {
-									event.preventDefault();
 									$.ajax({
-										url : "{% url 'fertilizer_activate' %}", // the endpoint
-										type : "POST", // http method
+										url : "{% url 'fertilizer_activate' %}",
+										type : "POST",
 										data : { fertilizer_id : {{ fertilizer.id }},
-												 activated : 1},
+												 activated : this.checked ? 1 : 0},
 										success : function(json, textMsg, xhr) {
-											alert('AJAX called successfully: ' + json['message'])
+											console.debug('AJAX called successfully: ' + json['message'])
 										},
-										error : function(xhr,errmsg,err) {
-											alert("Opps! Something's wrong!")
+										error : function(xhr, errmsg, err) {
+											console.debug("Opps! Something's wrong!")
 										}
 									});
 								});
 							</script>
 	  					</td>
-	  					<td>{{ fertilizer.fertilizer.name }}</td>
-	  					<td></td>
 	  				</tr>
 	  				{% endfor %}
 	  			</table>

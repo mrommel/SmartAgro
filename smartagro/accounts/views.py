@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # accounts/views.py
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
+from .forms import ProfileChangeForm
 
 def signup(request):
 	if request.method == 'POST':
@@ -21,9 +23,11 @@ def signup(request):
 		
 	return render(request, 'accounts/signup.html', {'form': form})
 	
+@login_required 
 def profile(request):
 
-	form = UserChangeForm(instance=request.user)
+	form = ProfileChangeForm(instance=request.user)
+	
 	return render(request, 'accounts/profile.html', {
 		'form': form
 	})

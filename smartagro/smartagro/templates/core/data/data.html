@@ -37,19 +37,25 @@
 				<h6>We will help you managing your data. Please add data that you want to use in <a href="/core/documentations">documentations</a>.</h6>
 				<hr class="w3-clear">
 				<p>
-					<img src="{% static 'core/images/field.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px">
-					<a href="/core/fields">Fields</a>
+					<img src="{% static 'core/images/field.png' %}" alt="Field" class="w3-left w3-margin-right" style="width:40px">
+					<a href="{% url 'field_list' %}">Fields</a>
 				</p>
 				<br />
 				<p>
-					<img src="{% static 'core/images/machine.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px">
-					<a href="/core/machines">Machines</a>
+					<img src="{% static 'core/images/machine.png' %}" alt="Machine" class="w3-left w3-margin-right" style="width:40px">
+					<a href="{% url 'machine_list' %}">Machines</a>
 				</p>
 				<br />
 				<p>
-					<img src="{% static 'core/images/person.png' %}" alt="Avatar" class="w3-left w3-margin-right" style="width:40px">
-					<a href="/core/persons">Persons</a>
+					<img src="{% static 'core/images/person.png' %}" alt="Person" class="w3-left w3-margin-right" style="width:40px">
+					<a href="{% url 'person_list' %}">Persons</a>
 				</p>
+				<br />
+				<p>
+					<img src="{% static 'core/images/fertilizer.png' %}" alt="Fertilizer" class="w3-left w3-margin-right" style="width:40px">
+					<a href="{% url 'fertilizer_list' %}">Fertilizer</a>
+				</p>
+				<br/>
 			</div>
     	</div>
     </div>
