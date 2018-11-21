@@ -192,11 +192,11 @@ class SeedRelation(models.Model):
 		
 class PlantProtectantRelation(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
-	plantProtectant = models.ForeignKey(PlantProtectant)
+	plant_protectant = models.ForeignKey(PlantProtectant)
 	active = models.NullBooleanField(default=False)
 	
 	def __unicode__(self):
-		return '%s - %s' % (self.plantProtectant.name, self.active)
+		return '%s - %s' % (self.plant_protectant.name, self.active)
 	
 DOCUMENTATION_TYPES = (('W', _('Plowing')), ('S', _('Sowing')), ('H', _('Harvesting')), ('F', _('Fertilization')), ('C', _('Cropcare')), ('P', _('Plantprotect')), )
 DOCUMENTATION_STATUS = (('P', _('Planned')), ('S', _('Saved')), ('B', _('Booked')))

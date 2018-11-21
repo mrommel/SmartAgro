@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
-from .models import Machine, Person, Field, FertilizerRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
-from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset, FertilizerActivationForm
+from .models import Machine, Person, Field, FertilizerRelation, PlantProtectantRelation, SeedRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
+from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset, FertilizerActivationForm, PlantProtectantActivationForm, SeedActivationForm
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
 from django.utils.decorators import method_decorator
@@ -299,7 +299,7 @@ class FieldDelete(DeleteView):
 """
 	--------------------------------------------
 	
-	fertilizer
+	fertilizers
 	
 	--------------------------------------------
 """
@@ -314,7 +314,9 @@ class FertilizerList(ListView):
 
 @require_http_methods(['POST'])
 def fertilizer_activate(request):
-		
+	"""
+		view that handles ajax request
+	"""
 	form = FertilizerActivationForm(request.POST)
 	if form.is_valid():
 		fertilizer_id = form.cleaned_data.get('fertilizer_id')
@@ -329,21 +331,84 @@ def fertilizer_activate(request):
 			raise Http404("FertilizerRelation does not exist")
 		
 		return JsonResponse({"message": "form: %s - %s" % (fertilizerRelation.fertilizer.id, activated)}, status=201)
-		#return JsonResponse({"message": "form is submitted: %s - %s" % (fertilizer_id, activated)}, status=201)
 	
 	return JsonResponse({"error": "invalid input"}, status=400)
-	#user = request.user
-	#	
-	#try:
-	#	fertilizerRelation = FertilizerRelation.objects.get(pk=fertilizer_id, owner=user)
-	#except FertilizerRelation.DoesNotExist:
-	#	raise Http404("FertilizerRelation does not exist")
+
+"""
+	--------------------------------------------
 	
-	#if request.POST:
-	#	fertilizerRelation.active = active
-	#	fertilizerRelation.save()
+	plant protectants
 	
-	#return HttpResponse('')
+	--------------------------------------------
+"""
+
+@method_decorator(login_required, name='dispatch')
+class PlantProtectantList(ListView):
+	"""
+		view that displays a list of plant protectant relations
+	"""
+	model = PlantProtectantRelation
+	template_name = 'core/data/plantprotectantrelation_list.html'
+
+@require_http_methods(['POST'])
+def plantprotectant_activate(request):
+	"""
+		view that handles ajax request
+	"""
+	form = PlantProtectantActivationForm(request.POST)
+	if form.is_valid():
+		plant_protectant_id = form.cleaned_data.get('plant_protectant_id')
+		activated = form.cleaned_data.get('activated')
+		user = request.user
+		
+		try:
+			plantProtectantRelation = PlantProtectantRelation.objects.get(pk=plant_protectant_id, owner=user)
+			plantProtectantRelation.active = activated
+			plantProtectantRelation.save()
+		except PlantProtectantRelation.DoesNotExist:
+			raise Http404("PlantProtectantRelation does not exist")
+		
+		return JsonResponse({"message": "form: %s - %s" % (plantProtectantRelation.plant_protectant.id, activated)}, status=201)
+	
+	return JsonResponse({"error": "invalid input"}, status=400)
+
+"""
+	--------------------------------------------
+	
+	seeds
+	
+	--------------------------------------------
+"""
+
+@method_decorator(login_required, name='dispatch')
+class SeedList(ListView):
+	"""
+		view that displays a list of seed relations
+	"""
+	model = SeedRelation
+	template_name = 'core/data/seedrelation_list.html'
+
+@require_http_methods(['POST'])
+def seed_activate(request):
+	"""
+		view that handles ajax request
+	"""
+	form = SeedActivationForm(request.POST)
+	if form.is_valid():
+		seed_id = form.cleaned_data.get('seed_id')
+		activated = form.cleaned_data.get('activated')
+		user = request.user
+		
+		try:
+			seedRelation = SeedRelation.objects.get(pk=seed_id, owner=user)
+			seedRelation.active = activated
+			seedRelation.save()
+		except SeedRelation.DoesNotExist:
+			raise Http404("SeedRelation does not exist")
+		
+		return JsonResponse({"message": "form: %s - %s" % (seedRelation.seed.id, activated)}, status=201)
+	
+	return JsonResponse({"error": "invalid input"}, status=400)
 
 """
 	--------------------------------------------

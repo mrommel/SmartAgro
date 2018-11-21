@@ -12,10 +12,14 @@ from core.models import Machine, Person, Field, Documentation, DocumentationFiel
 class FertilizerActivationForm(forms.Form):
 	fertilizer_id = forms.CharField(max_length=10, required=True)
 	activated = forms.CharField(max_length=255, required=True)
-	
-	def clean_fertilizer_id(self):
-		# Pre-process fertilizer_id
-		return re.sub('\D', '', self.cleaned_data.get('fertilizer_id'))
+
+class PlantProtectantActivationForm(forms.Form):
+	plant_protectant_id = forms.CharField(max_length=10, required=True)
+	activated = forms.CharField(max_length=255, required=True)
+
+class SeedActivationForm(forms.Form):
+	seed_id = forms.CharField(max_length=10, required=True)
+	activated = forms.CharField(max_length=255, required=True)
 
 class DocumentationFieldRelationForm(ModelForm):
 	class Meta:

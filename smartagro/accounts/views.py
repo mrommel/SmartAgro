@@ -26,7 +26,12 @@ def signup(request):
 @login_required 
 def profile(request):
 
-	form = ProfileChangeForm(instance=request.user)
+	if request.method == 'POST':
+		form = ProfileChangeForm(request.POST, instance=request.user)
+		if form.is_valid():
+			form.save()
+	else:
+		form = ProfileChangeForm(instance=request.user)
 	
 	return render(request, 'accounts/profile.html', {
 		'form': form

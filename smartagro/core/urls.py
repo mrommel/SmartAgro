@@ -31,10 +31,17 @@ urlpatterns = [
     url(r'^field/edit/(?P<field_id>.+)$', views.FieldUpdate.as_view(), name='field_edit'),
     url(r'^field/delete/(?P<field_id>.+)$', views.FieldDelete.as_view(), name='field_delete'),
     
-    # fertilizer
+    # fertilizers
     url(r'^fertilizers$', views.FertilizerList.as_view(), name='fertilizer_list'),
     url(r'^fertilizer_activate$', views.fertilizer_activate, name='fertilizer_activate'),
-    #url(r'^fertilizer_add$', views.FertilizerList.as_view(), name='fertilizer_add'),
+    
+    # plant protectants
+    url(r'^plantprotectants$', views.PlantProtectantList.as_view(), name='plantprotectant_list'),
+    url(r'^plantprotectant_activate$', views.plantprotectant_activate, name='plantprotectant_activate'),
+    
+    # 
+    url(r'^seeds$', views.SeedList.as_view(), name='seed_list'),
+    url(r'^seed_activate$', views.seed_activate, name='seed_activate'),
     
     # documentations
     url(r'^documentations$', views.DocumentationList.as_view(), name='documentation_list'),
