@@ -42,9 +42,27 @@
 				<p>
 					<form action="" method="post">
 						{% csrf_token %}
-        				{{ form.as_p }}
+        				{{ form.non_field_errors }}
 
-						<table class="table">
+  						{% for hidden_field in form.hidden_fields %}
+    						{{ hidden_field.errors }}
+    						{{ hidden_field }}
+  						{% endfor %}
+
+					  	<table class="w3-table w3-striped">
+							{% for field in form.visible_fields %}
+						  		<tr>
+									<th>{{ field.label_tag }}</th>
+									<td>
+							  			{{ field.errors }}
+							  			{{ field }}
+							  			{{ field.help_text }}
+									</td>
+						  		</tr>
+							{% endfor %}
+					  	</table>
+
+						<table class="w3-table w3-striped">
 							{{ fields.management_form }}
 
 							{% for form in fields.forms %}
@@ -74,7 +92,7 @@
 							{% endfor %}
 						</table>
 						
-						<table class="table">
+						<table class="w3-table w3-striped">
 							{{ machines.management_form }}
 
 							{% for form in machines.forms %}
@@ -104,7 +122,7 @@
 							{% endfor %}
 						</table>
 						
-						<table class="table">
+						<table class="w3-table w3-striped">
 							{{ persons.management_form }}
 
 							{% for form in persons.forms %}
@@ -133,6 +151,36 @@
 								</tr>
 							{% endfor %}
 						</table>
+						<table class="w3-table w3-striped">
+							{{ fertilizers.management_form }}
+
+							{% for form in fertilizers.forms %}
+								{% if forloop.first %}
+									<thead>
+									<tr>
+										{% for field in form.visible_fields %}
+											<th>{{ field.label|capfirst }}</th>
+										{% endfor %}
+									</tr>
+									</thead>
+								{% endif %}
+								<tr class="{% cycle 'row1' 'row2' %} formset_row_fertilizer">
+									{% for field in form.visible_fields %}
+										<td>
+											{# Include the hidden fields in the form #}
+											{% if forloop.first %}
+												{% for hidden in form.hidden_fields %}
+													{{ hidden }}
+												{% endfor %}
+											{% endif %}
+											{{ field.errors.as_ul }}
+											{{ field }}
+										</td>
+									{% endfor %}
+								</tr>
+							{% endfor %}
+						</table>
+						<br />
 						<input type="submit" class="w3-button w3-theme-d1" value="Save"/> <a href="{% url 'documentation_list' %}" class="w3-button w3-theme-l4">Cancel</a>
 					</form>
 				</p>
@@ -160,6 +208,11 @@
     });
     $('.formset_row_persons').formset({
         addText: 'add person',
+        deleteText: 'remove',
+        prefix: 'familymember_set'
+    });
+    $('.formset_row_fertilizer').formset({
+        addText: 'add fertilizer',
         deleteText: 'remove',
         prefix: 'familymember_set'
     });

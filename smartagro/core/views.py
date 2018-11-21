@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
 from .models import Machine, Person, Field, FertilizerRelation, PlantProtectantRelation, SeedRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
-from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset, FertilizerActivationForm, PlantProtectantActivationForm, SeedActivationForm
+from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset, DocumentationFertilizerRelationFormset, FertilizerActivationForm, PlantProtectantActivationForm, SeedActivationForm
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
 from django.utils.decorators import method_decorator
@@ -509,10 +509,12 @@ class DocumentationUpdate(UpdateView):
 			data['fields'] = DocumentationFieldRelationFormset(self.request.POST, instance=self.object)
 			data['machines'] = DocumentationMachineRelationFormset(self.request.POST, instance=self.object)
 			data['persons'] = DocumentationPersonRelationFormset(self.request.POST, instance=self.object)
+			data['fertilizers'] = DocumentationFertilizerRelationFormset(self.request.POST, instance=self.object)
 		else:
 			data['fields'] = DocumentationFieldRelationFormset(instance=self.object)
 			data['machines'] = DocumentationMachineRelationFormset(instance=self.object)
 			data['persons'] = DocumentationPersonRelationFormset(instance=self.object)
+			data['fertilizers'] = DocumentationFertilizerRelationFormset(instance=self.object)
 			
 		return data
 	
@@ -521,6 +523,7 @@ class DocumentationUpdate(UpdateView):
 		fields = context['fields']
 		machines = context['machines']
 		persons = context['persons']
+		fertilizers = context['fertilizers']
 		
 		with transaction.atomic():
 			documentation = form.save(commit=False)
@@ -539,6 +542,10 @@ class DocumentationUpdate(UpdateView):
 			if persons.is_valid():
 				persons.instance = self.object
 				persons.save()
+				
+			if fertilizers.is_valid():
+				fertilizers.instance = self.object
+				fertilizers.save()
 				
 		return super(DocumentationUpdate, self).form_valid(form)
 

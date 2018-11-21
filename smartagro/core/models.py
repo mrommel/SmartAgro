@@ -238,6 +238,14 @@ class Documentation(models.Model):
 			personArray.append(personRelation.person)
 		
 		return personArray
+		
+	def fertilizers(self):
+		fertilizerArray = []
+		
+		for fertilizerRelation in DocumentationFertilizerRelation.objects.filter(documentation = self):
+			fertilizerArray.append(fertilizerRelation.fertilizer)
+		
+		return fertilizerArray
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.date, self.type)
@@ -262,3 +270,11 @@ class DocumentationPersonRelation(models.Model):
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.documentation, self.person)
+		
+class DocumentationFertilizerRelation(models.Model):
+	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
+	fertilizer = models.ForeignKey(FertilizerRelation, on_delete=models.CASCADE)
+	amount = models.IntegerField()
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.documentation, self.fertilizer)
