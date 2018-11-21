@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}
  	<ul class="breadcrumbs">
-   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
+   		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
     	<li><a href="{% url 'field_list' %}">Fields</a></li>
     	<li class="last active"><a href="{% url 'field_detail' object.pk %}">{{ object }}</a></li>
   	</ul>

@@ -5,10 +5,10 @@
 
 {% block breadcrumbs %}
  	<ul class="breadcrumbs">
-   		<li class="first"><a href="/core/index"><i class="fa fa-home w3-margin-right"></i></a></li>
+   		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="{% url 'data' %}">Data</a></li>
     	<li><a href="{% url 'machine_list' %}">Machines</a></li>
-    	<li class="last active"><a href="/core/machine/detail/{{ machine.id }}">{{ machine.name }}</a></li>
+    	<li class="last active"><a href="{% url 'machine_detail' machine.id %}">{{ machine.name }}</a></li>
   	</ul>
 {% endblock %}
 
