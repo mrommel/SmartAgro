@@ -110,7 +110,7 @@ class Machine(models.Model):
 		if self.image.name is not None and self.image.name <> '':
 			return mark_safe('<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name)))
 		else:
-			return mark_safe('<img border="0" alt="" src="/static/core/images/machine-icon-grey.JPG" height="40" />')
+			return mark_safe('<img border="0" alt="" src="/static/core/images/machine.png" height="40" />')
 	thumbnail.allow_tags = True
 	
 	def get_absolute_url(self):
@@ -135,7 +135,7 @@ class Person(models.Model):
 		if self.image.name is not None and self.image.name <> '':
 			return mark_safe('<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name)))
 		else:
-			return mark_safe('<img border="0" alt="" src="/static/core/images/person-icon-grey.JPG" height="40" />')
+			return mark_safe('<img border="0" alt="" src="/static/core/images/person.png" height="40" />')
 	thumbnail.allow_tags = True
 	
 	def get_absolute_url(self):
