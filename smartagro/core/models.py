@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from operator import attrgetter
 from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
 
 """
  	Links
@@ -107,9 +108,9 @@ class Machine(models.Model):
 			Returns an extendable version of the 'image' of this machine as html or a default image
 		"""
 		if self.image.name is not None and self.image.name <> '':
-			return '<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name))
+			return mark_safe('<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name)))
 		else:
-			return '<img border="0" alt="" src="/static/core/images/machine-icon-grey.JPG" height="40" />'
+			return mark_safe('<img border="0" alt="" src="/static/core/images/machine-icon-grey.JPG" height="40" />')
 	thumbnail.allow_tags = True
 	
 	def get_absolute_url(self):
@@ -132,9 +133,9 @@ class Person(models.Model):
 			Returns an extendable version of the 'image' of this person as html or a default image
 		"""
 		if self.image.name is not None and self.image.name <> '':
-			return '<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name))
+			return mark_safe('<a href="/media/%s"><img border="0" alt="" src="/media/%s" height="40" /></a>' % ((self.image.name, self.image.name)))
 		else:
-			return '<img border="0" alt="" src="/static/core/images/person-icon-grey.JPG" height="40" />'
+			return mark_safe('<img border="0" alt="" src="/static/core/images/person-icon-grey.JPG" height="40" />')
 	thumbnail.allow_tags = True
 	
 	def get_absolute_url(self):

@@ -8,7 +8,7 @@
    		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="{% url 'data' %}">Data</a></li>
     	<li><a href="{% url 'machine_list' %}">Machines</a></li>
-    	<li class="last active"><a href="{% url 'machine_detail' machine.id %}">{{ machine.name }}</a></li>
+    	<li class="last active"><a href="{% url 'machine_detail' object.id %}">{{ object.name }}</a></li>
   	</ul>
 {% endblock %}
 
@@ -40,7 +40,9 @@
 				<table class="w3-table w3-striped">
 					<tr>
 						<td>Picture</td>
-						<td>{{ object.image.url }}</td>
+						<td>
+							{{ object.thumbnail }}
+						</td>
 					</tr>
 					<tr>
 						<td>Name</td>

@@ -56,10 +56,6 @@ class MachineCreate(CreateView):
 	template_name = 'core/data/machine_form.html'
 	success_url = reverse_lazy('machine_list')
 	
-	def get_context_data(self, **kwargs):
-		data = super(MachineCreate, self).get_context_data(**kwargs)
-		return data
-	
 	def form_valid(self, form):
 		with transaction.atomic():
 			machine = form.save(commit=False)
@@ -78,11 +74,6 @@ class MachineDetail(DetailView):
 	model = Machine
 	pk_url_kwarg = 'machine_id'
 	template_name = 'core/data/machine_detail.html'
-	
-	def get_context_data(self, **kwargs):
-		context = super(MachineDetail, self).get_context_data(**kwargs)
-		#context['documentations'] = self.object.documentations()
-		return context
 
 @method_decorator(login_required, name='dispatch')
 class MachineUpdate(UpdateView):
@@ -95,10 +86,6 @@ class MachineUpdate(UpdateView):
 	fields = ['name', 'model']
 	template_name = 'core/data/machine_form.html'
 	success_url = reverse_lazy('machine_list')
-	
-	def get_context_data(self, **kwargs):
-		data = super(MachineUpdate, self).get_context_data(**kwargs)
-		return data
 	
 	def form_valid(self, form):
 		with transaction.atomic():
@@ -145,10 +132,6 @@ class PersonCreate(CreateView):
 	template_name = 'core/data/person_form.html'
 	success_url = reverse_lazy('person_list')
 	
-	def get_context_data(self, **kwargs):
-		data = super(PersonCreate, self).get_context_data(**kwargs)
-		return data
-	
 	def form_valid(self, form):
 		with transaction.atomic():
 			field = form.save(commit=False)
@@ -167,11 +150,6 @@ class PersonDetail(DetailView):
 	model = Person
 	pk_url_kwarg = 'person_id'
 	template_name = 'core/data/person_detail.html'
-	
-	def get_context_data(self, **kwargs):
-		context = super(PersonDetail, self).get_context_data(**kwargs)
-		#context['documentations'] = self.object.documentations()
-		return context
 
 @method_decorator(login_required, name='dispatch')
 class PersonUpdate(UpdateView):
@@ -184,10 +162,6 @@ class PersonUpdate(UpdateView):
 	fields = ['first_name', 'last_name', 'image']
 	template_name = 'core/data/person_form.html'
 	success_url = reverse_lazy('person_list')
-	
-	def get_context_data(self, **kwargs):
-		data = super(PersonUpdate, self).get_context_data(**kwargs)
-		return data
 	
 	def form_valid(self, form):
 		with transaction.atomic():
@@ -234,10 +208,6 @@ class FieldCreate(CreateView):
 	template_name = 'core/data/field_form.html'
 	success_url = reverse_lazy('field_list')
 	
-	def get_context_data(self, **kwargs):
-		data = super(FieldCreate, self).get_context_data(**kwargs)
-		return data
-	
 	def form_valid(self, form):
 		with transaction.atomic():
 			field = form.save(commit=False)
@@ -256,11 +226,6 @@ class FieldDetail(DetailView):
 	model = Field
 	pk_url_kwarg = 'field_id'
 	template_name = 'core/data/field_detail.html'
-	
-	def get_context_data(self, **kwargs):
-		context = super(FieldDetail, self).get_context_data(**kwargs)
-		#context['documentations'] = self.object.documentations()
-		return context
 
 @method_decorator(login_required, name='dispatch')
 class FieldUpdate(UpdateView):
@@ -273,10 +238,6 @@ class FieldUpdate(UpdateView):
 	fields = ['name', 'area']
 	template_name = 'core/data/field_form.html'
 	success_url = reverse_lazy('field_list')
-	
-	def get_context_data(self, **kwargs):
-		data = super(FieldUpdate, self).get_context_data(**kwargs)
-		return data
 	
 	def form_valid(self, form):
 		with transaction.atomic():
@@ -485,11 +446,6 @@ class DocumentationDetail(DetailView):
 	model = Documentation
 	pk_url_kwarg = 'documentation_id'
 	template_name = 'core/documentations/documentation_detail.html'
-	
-	def get_context_data(self, **kwargs):
-		context = super(DocumentationDetail, self).get_context_data(**kwargs)
-		#context['now'] = timezone.now()
-		return context
 	
 @method_decorator(login_required, name='dispatch')
 class DocumentationUpdate(UpdateView):

@@ -7,8 +7,12 @@
  	<ul class="breadcrumbs">
    		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="{% url 'data' %}">Data</a></li>
-    	<li><a href="{% url 'person_list' %}">Persons</a></li>
-    	<li class="last active"><a href="{% url 'person_detail' person.pk %}">{{ person }}</a></li>
+   		{% if object %}
+    		<li><a href="{% url 'person_list' %}">Persons</a></li>
+    	<li class="last active"><a href="{% url 'person_detail' object.pk %}">{{ object }}</a></li>
+    	{% else %}
+    		<li class="last active"><a href="{% url 'person_list' %}">Persons</a></li>
+    	{% endif %}
   	</ul>
 {% endblock %}
 
