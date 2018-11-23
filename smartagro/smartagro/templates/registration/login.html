@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+{% load i18n %}
+
 {% block profile %}
 
 <div class="w3-card w3-round w3-white">
@@ -11,8 +14,6 @@
 			<button type="submit">Login</button>
 		</form>
 		<br />
-		<p><a href="/accounts/signup">Register</a></p>
-		<br />
 	</div>
 </div>
 <br />
@@ -22,16 +23,19 @@
 {% block content %}
 
 <div class="w3-row-padding">
-        <div class="w3-col m12">
-          <div class="w3-card w3-round w3-white">
-            <div class="w3-container w3-padding">
-              <h6 class="w3-opacity">Please login or register here</h6>
-              <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post</button> 
-            </div>
-          </div>
-        </div>
-      </div>
+	<div class="w3-col m12">
+		<div class="w3-card w3-round w3-white">
+			<div class="w3-container w3-padding">
+				<h4 class="w3-opacity">Please register here</h4>
+				<img src="{% static 'core/images/farm_ambient.jpg' %}" alt="farm_ambient" style="width:100%;">
+				<p>In order to manage your farm with SmartAGRO, you need to register.</p>
+				<a href="/accounts/signup" class="w3-button w3-theme">Register</a> 
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+</div>
 
 
 {% endblock %}
