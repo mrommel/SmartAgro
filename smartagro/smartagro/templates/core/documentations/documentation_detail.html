@@ -86,6 +86,8 @@
 							</ul>
 						</td>
 					</tr>
+					{# show fertilizer only if type is fertilization #}
+					{% if documentation.type == 'F' %}
 					<tr>
 						<td>Fertilizer</td>
 						<td>
@@ -98,6 +100,22 @@
 							</ul>
 						</td>
 					</tr>
+					{% endif %}
+					{# show plant protectants only if type is plant protection or sowing #}
+					{% if documentation.type == 'P' or documentation.type == 'S' %}
+					<tr>
+						<td>Plant protectants</td>
+						<td>
+							<ul>
+	  							{% for fertilizer in documentation.fertilizers %}
+	  								{% if fertilizer %}
+										<li><a href="{% url 'fertilizer_detail' fertilizer.pk %}">{{ fertilizer }}</a></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</td>
+					</tr>
+					{% endif %}
 				</table>
 				<br />
 	  			<a href="{% url 'documentation_edit' documentation.pk %}" class="w3-button w3-theme-d1">Edit</a>

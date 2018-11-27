@@ -247,6 +247,14 @@ class Documentation(models.Model):
 			fertilizerArray.append(fertilizerRelation.fertilizer)
 		
 		return fertilizerArray
+		
+	def plant_protectants(self):
+		plantProtectantsArray = []
+		
+		for plantProtectantRelation in DocumentationPlantProtectantRelation.objects.filter(documentation = self):
+			plantProtectantsArray.append(plantProtectantRelation.plant_protectant)
+		
+		return plantProtectantsArray
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.date, self.type)
@@ -279,3 +287,19 @@ class DocumentationFertilizerRelation(models.Model):
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.documentation, self.fertilizer)
+		
+class DocumentationPlantProtectantRelation(models.Model):
+	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
+	plant_protectant = models.ForeignKey(PlantProtectantRelation, on_delete=models.CASCADE)
+	amount = models.IntegerField()
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.documentation, self.plant_protectant)
+		
+class DocumentationSeedRelation(models.Model):
+	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
+	seed = models.ForeignKey(SeedRelation, on_delete=models.CASCADE)
+	amount = models.IntegerField()
+	
+	def __unicode__(self):
+		return '%s - %s' % (self.documentation, self.seed)
