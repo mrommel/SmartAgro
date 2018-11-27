@@ -107,9 +107,24 @@
 						<td>Plant protectants</td>
 						<td>
 							<ul>
-	  							{% for fertilizer in documentation.fertilizers %}
-	  								{% if fertilizer %}
-										<li><a href="{% url 'fertilizer_detail' fertilizer.pk %}">{{ fertilizer }}</a></li>
+	  							{% for plant_protectant in documentation.plant_protectants %}
+	  								{% if plant_protectant %}
+										<li><a href="{% url 'plant_protectant_detail' plant_protectant.pk %}">{{ plant_protectant }}</a></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</td>
+					</tr>
+					{% endif %}
+					{# show seeds only if type is sowing #}
+					{% if documentation.type == 'S' %}
+					<tr>
+						<td>Seeds</td>
+						<td>
+							<ul>
+	  							{% for seed in documentation.seeds %}
+	  								{% if seed %}
+										<li><a href="{% url 'seed_detail' seed.pk %}">{{ seed }}</a></li>
 									{% endif %}
 								{% endfor %}
 							</ul>

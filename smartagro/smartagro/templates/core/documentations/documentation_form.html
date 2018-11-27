@@ -151,10 +151,76 @@
 								</tr>
 							{% endfor %}
 						</table>
+						
+						{{ fertilizers.management_form }}
+						{# show fertilizer only if type is fertilization #}
+						{% if documentation.type == 'F' %}
+							<table class="w3-table w3-striped">
+								{% for form in fertilizers.forms %}
+									{% if forloop.first %}
+										<thead>
+										<tr>
+											{% for field in form.visible_fields %}
+												<th>{{ field.label|capfirst }}</th>
+											{% endfor %}
+										</tr>
+										</thead>
+									{% endif %}
+									<tr class="{% cycle 'row1' 'row2' %} formset_row_fertilizer">
+										{% for field in form.visible_fields %}
+											<td>
+												{# Include the hidden fields in the form #}
+												{% if forloop.first %}
+													{% for hidden in form.hidden_fields %}
+														{{ hidden }}
+													{% endfor %}
+												{% endif %}
+												{{ field.errors.as_ul }}
+												{{ field }}
+											</td>
+										{% endfor %}
+									</tr>
+								{% endfor %}
+							</table>
+						{% endif %}
+						
+						{{ plant_protectants.management_form }}
+						{# show plant protectants only if type is plant protection or sowing #}
+						{% if documentation.type == 'P' or documentation.type == 'S' %}
+							<table class="w3-table w3-striped">
+								{% for form in plant_protectants.forms %}
+									{% if forloop.first %}
+										<thead>
+										<tr>
+											{% for field in form.visible_fields %}
+												<th>{{ field.label|capfirst }}</th>
+											{% endfor %}
+										</tr>
+										</thead>
+									{% endif %}
+									<tr class="{% cycle 'row1' 'row2' %} formset_row_plant_protectants">
+										{% for field in form.visible_fields %}
+											<td>
+												{# Include the hidden fields in the form #}
+												{% if forloop.first %}
+													{% for hidden in form.hidden_fields %}
+														{{ hidden }}
+													{% endfor %}
+												{% endif %}
+												{{ field.errors.as_ul }}
+												{{ field }}
+											</td>
+										{% endfor %}
+									</tr>
+								{% endfor %}
+							</table>
+						{% endif %}
+						
+						{{ seeds.management_form }}
+						{# show seeds only if type is sowing #}
+						{% if documentation.type == 'S' %}
 						<table class="w3-table w3-striped">
-							{{ fertilizers.management_form }}
-
-							{% for form in fertilizers.forms %}
+							{% for form in seeds.forms %}
 								{% if forloop.first %}
 									<thead>
 									<tr>
@@ -164,7 +230,7 @@
 									</tr>
 									</thead>
 								{% endif %}
-								<tr class="{% cycle 'row1' 'row2' %} formset_row_fertilizer">
+								<tr class="{% cycle 'row1' 'row2' %} formset_row_seeds">
 									{% for field in form.visible_fields %}
 										<td>
 											{# Include the hidden fields in the form #}
@@ -180,6 +246,7 @@
 								</tr>
 							{% endfor %}
 						</table>
+						{% endif %}
 						<br />
 						<input type="submit" class="w3-button w3-theme-d1" value="Save"/> <a href="{% url 'documentation_detail' object.pk %}" class="w3-button w3-theme-l4">Cancel</a>
 					</form>
@@ -213,6 +280,16 @@
     });
     $('.formset_row_fertilizer').formset({
         addText: 'add fertilizer',
+        deleteText: 'remove',
+        prefix: 'familymember_set'
+    });
+    $('.formset_row_plant_protectants').formset({
+        addText: 'add plant protectant',
+        deleteText: 'remove',
+        prefix: 'familymember_set'
+    });
+    $('.formset_row_seeds').formset({
+        addText: 'add seed',
         deleteText: 'remove',
         prefix: 'familymember_set'
     });

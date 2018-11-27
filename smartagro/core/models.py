@@ -92,6 +92,9 @@ class PlantProtectant(models.Model):
 """
 
 class Machine(models.Model):
+	"""
+		Class that holds the machines
+	"""
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	name = models.CharField(max_length=64)
 	model = models.ForeignKey(Model, on_delete=models.CASCADE, null=True, blank=True)
@@ -123,6 +126,9 @@ class Machine(models.Model):
 		return '%s' % (self.name)
 	
 class Person(models.Model):
+	"""
+		Class that holds the persons
+	"""
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	first_name = models.CharField(max_length=64)
 	last_name = models.CharField(max_length=64)
@@ -146,8 +152,12 @@ class Person(models.Model):
 	
 	def __unicode__(self):
 		return '%s %s' % (self.first_name, self.last_name)
-		
+
+
 class Field(models.Model):
+	"""
+		Class that holds the fields
+	"""
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	name = models.CharField(max_length=64)
 	area = models.IntegerField()
@@ -174,7 +184,8 @@ class Field(models.Model):
 	
 	def __unicode__(self):
 		return '%s - %d ha' % (self.name, self.area)
-	
+
+
 class FertilizerRelation(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	fertilizer = models.ForeignKey(Fertilizer)
@@ -203,6 +214,9 @@ DOCUMENTATION_TYPES = (('W', _('Plowing')), ('S', _('Sowing')), ('H', _('Harvest
 DOCUMENTATION_STATUS = (('P', _('Planned')), ('S', _('Saved')), ('B', _('Booked')))
 
 class Documentation(models.Model):
+	"""
+		Class that holds all documentation related connections
+	"""
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	date = models.DateField()
 	duration = models.IntegerField() # in minutes
@@ -217,6 +231,9 @@ class Documentation(models.Model):
 		return reverse('documentation_detail', args=[str(self.id)])
 	
 	def fields(self):
+		"""
+			Returns the fields that are linked to this documentation
+		"""
 		fieldArray = []
 	
 		for fieldRelation in DocumentationFieldRelation.objects.filter(documentation = self):
@@ -225,6 +242,9 @@ class Documentation(models.Model):
 		return fieldArray
 		
 	def machines(self):
+		"""
+			Returns the machines that are linked to this documentation
+		"""
 		machineArray = []
 		
 		for machineRelation in DocumentationMachineRelation.objects.filter(documentation = self):
@@ -233,6 +253,9 @@ class Documentation(models.Model):
 		return machineArray
 		
 	def persons(self):
+		"""
+			Returns the persons that are linked to this documentation
+		"""
 		personArray = []
 		
 		for personRelation in DocumentationPersonRelation.objects.filter(documentation = self):
@@ -241,6 +264,9 @@ class Documentation(models.Model):
 		return personArray
 		
 	def fertilizers(self):
+		"""
+			Returns the fertilizers that are linked to this documentation
+		"""
 		fertilizerArray = []
 		
 		for fertilizerRelation in DocumentationFertilizerRelation.objects.filter(documentation = self):
@@ -249,17 +275,34 @@ class Documentation(models.Model):
 		return fertilizerArray
 		
 	def plant_protectants(self):
+		"""
+			Returns the plant protectants that are linked to this documentation
+		"""
 		plantProtectantsArray = []
 		
 		for plantProtectantRelation in DocumentationPlantProtectantRelation.objects.filter(documentation = self):
 			plantProtectantsArray.append(plantProtectantRelation.plant_protectant)
 		
 		return plantProtectantsArray
+		
+	def seeds(self):
+		"""
+			Returns the seeds that are linked to this documentation
+		"""
+		seedArray = []
+		
+		for seedRelation in DocumentationSeedRelation.objects.filter(documentation = self):
+			seedArray.append(seedRelation.seed)
+		
+		return seedArray
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.date, self.type)
 		
 class DocumentationFieldRelation(models.Model):
+	"""
+		class that holds the relation between documentations and fields
+	"""
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
 	field = models.ForeignKey(Field, on_delete=models.CASCADE, blank=True, null=True)
 	
@@ -267,6 +310,9 @@ class DocumentationFieldRelation(models.Model):
 		return '%s - %s' % (self.documentation, self.field)
 	
 class DocumentationMachineRelation(models.Model):
+	"""
+		class that holds the relation between documentations and machines
+	"""
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
 	machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
 	
@@ -274,6 +320,9 @@ class DocumentationMachineRelation(models.Model):
 		return '%s - %s' % (self.documentation, self.machine)
 	
 class DocumentationPersonRelation(models.Model):
+	"""
+		class that holds the relation between documentations and persons
+	"""
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
 	person = models.ForeignKey(Person, on_delete=models.CASCADE)
 	
@@ -281,6 +330,9 @@ class DocumentationPersonRelation(models.Model):
 		return '%s - %s' % (self.documentation, self.person)
 		
 class DocumentationFertilizerRelation(models.Model):
+	"""
+		class that holds the relation between documentations and fertilizers
+	"""
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
 	fertilizer = models.ForeignKey(FertilizerRelation, on_delete=models.CASCADE)
 	amount = models.IntegerField()
@@ -289,6 +341,9 @@ class DocumentationFertilizerRelation(models.Model):
 		return '%s - %s' % (self.documentation, self.fertilizer)
 		
 class DocumentationPlantProtectantRelation(models.Model):
+	"""
+		class that holds the relation between documentations and plant protectants
+	"""
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
 	plant_protectant = models.ForeignKey(PlantProtectantRelation, on_delete=models.CASCADE)
 	amount = models.IntegerField()
@@ -297,9 +352,13 @@ class DocumentationPlantProtectantRelation(models.Model):
 		return '%s - %s' % (self.documentation, self.plant_protectant)
 		
 class DocumentationSeedRelation(models.Model):
+	"""
+		class that holds the relation between documentations and seeds
+	"""
 	documentation = models.ForeignKey(Documentation, on_delete=models.CASCADE)
 	seed = models.ForeignKey(SeedRelation, on_delete=models.CASCADE)
 	amount = models.IntegerField()
 	
 	def __unicode__(self):
 		return '%s - %s' % (self.documentation, self.seed)
+
