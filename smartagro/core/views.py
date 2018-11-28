@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django import forms
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
 from django.db import transaction
-from .models import Machine, Person, Field, FertilizerRelation, PlantProtectantRelation, SeedRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
+from .models import Machine, Person, Field, Fertilizer, PlantProtectant, Seed, FertilizerRelation, PlantProtectantRelation, SeedRelation, Documentation, DocumentationFieldRelation, DocumentationMachineRelation, DocumentationPersonRelation
 from .forms import DocumentationFieldRelationFormset, DocumentationMachineRelationFormset, DocumentationPersonRelationFormset, DocumentationFertilizerRelationFormset, DocumentationPlantProtectantRelationFormset, DocumentationSeedRelationFormset, FertilizerActivationForm, PlantProtectantActivationForm, SeedActivationForm
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.views.generic.detail import DetailView
@@ -295,6 +296,16 @@ def fertilizer_activate(request):
 	
 	return JsonResponse({"error": "invalid input"}, status=400)
 
+@method_decorator(login_required, name='dispatch')
+class FertilizerDetail(DetailView):
+	"""
+		view that displays a fertilizer 
+		- can be used in templates as {% url 'fertilizer_detail' fertilizer.pk %}
+	"""
+	model = Fertilizer
+	pk_url_kwarg = 'fertilizer_id'
+	template_name = 'core/data/fertilizer_detail.html'
+
 """
 	--------------------------------------------
 	
@@ -332,6 +343,16 @@ def plantprotectant_activate(request):
 		return JsonResponse({"message": "form: %s - %s" % (plantProtectantRelation.plant_protectant.id, activated)}, status=201)
 	
 	return JsonResponse({"error": "invalid input"}, status=400)
+
+@method_decorator(login_required, name='dispatch')
+class PlantProtectantDetail(DetailView):
+	"""
+		view that displays a plant protectant 
+		- can be used in templates as {% url 'plantprotectant_detail' plantprotectant.pk %}
+	"""
+	model = PlantProtectant
+	pk_url_kwarg = 'plant_protectant_id'
+	template_name = 'core/data/plantprotectant_detail.html'
 
 """
 	--------------------------------------------
@@ -371,6 +392,16 @@ def seed_activate(request):
 	
 	return JsonResponse({"error": "invalid input"}, status=400)
 
+@method_decorator(login_required, name='dispatch')
+class SeedDetail(DetailView):
+	"""
+		view that displays a seed
+		- can be used in templates as {% url 'seed_detail' seed.pk %}
+	"""
+	model = Seed
+	pk_url_kwarg = 'seed_id'
+	template_name = 'core/data/seed_detail.html'
+
 """
 	--------------------------------------------
 	
@@ -387,6 +418,14 @@ class DocumentationList(ListView):
 	model = Documentation
 	template_name = 'core/documentations/documentation_list.html'
 
+class DocumentationForm(forms.ModelForm):
+    class Meta:
+        model = Documentation
+        fields = ['date', 'duration', 'type', 'comments']
+        widgets = {
+            'comments': forms.Textarea(attrs={'rows': 4, 'cols': 60})
+        }
+
 @method_decorator(login_required, name='dispatch')
 class DocumentationCreate(CreateView):
 	"""
@@ -394,7 +433,7 @@ class DocumentationCreate(CreateView):
 		- can be used in templates as {% url 'documentation_add' %}
 	"""
 	model = Documentation
-	fields = ['date', 'duration', 'type']
+	form_class = DocumentationForm
 	template_name = 'core/documentations/documentation_form.html'
 	success_url = reverse_lazy('documentation_list')
 	
@@ -455,7 +494,7 @@ class DocumentationUpdate(UpdateView):
 	"""
 	model = Documentation
 	pk_url_kwarg = 'documentation_id'
-	fields = ['date', 'duration', 'type']
+	form_class = DocumentationForm
 	template_name = 'core/documentations/documentation_form.html'
 	
 	def get_success_url(self):

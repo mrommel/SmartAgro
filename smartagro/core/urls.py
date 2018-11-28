@@ -34,14 +34,17 @@ urlpatterns = [
     # fertilizers
     url(r'^fertilizers$', views.FertilizerList.as_view(), name='fertilizer_list'),
     url(r'^fertilizer_activate$', views.fertilizer_activate, name='fertilizer_activate'),
+    url(r'^fertilizer_detail$', views.FertilizerDetail.as_view(), name='fertilizer_detail'),
     
     # plant protectants
-    url(r'^plantprotectants$', views.PlantProtectantList.as_view(), name='plantprotectant_list'),
-    url(r'^plantprotectant_activate$', views.plantprotectant_activate, name='plantprotectant_activate'),
+    url(r'^plantprotectants$', views.PlantProtectantList.as_view(), name='plant_protectant_list'),
+    url(r'^plantprotectant_activate$', views.plantprotectant_activate, name='plant_protectant_activate'),
+    url(r'^plantprotectant_detail$', views.PlantProtectantDetail.as_view(), name='plant_protectant_detail'),
     
     # 
     url(r'^seeds$', views.SeedList.as_view(), name='seed_list'),
     url(r'^seed_activate$', views.seed_activate, name='seed_activate'),
+    url(r'^seed_detail$', views.SeedDetail.as_view(), name='seed_detail'),
     
     # documentations
     url(r'^documentations$', views.DocumentationList.as_view(), name='documentation_list'),

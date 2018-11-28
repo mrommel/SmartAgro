@@ -53,7 +53,7 @@
 					<tr>
 						<td>Fields</td>
 						<td>
-							<ul>
+							<ul class="w3-ul core-ul">
 								{% for field in documentation.fields %}
 									{% if field %}
 										<li><a href="{% url 'field_detail' field.pk %}">{{ field }}</a></li>
@@ -65,7 +65,7 @@
 					<tr>
 						<td>Machines</td>
 						<td>
-							<ul>
+							<ul class="w3-ul core-ul">
 	  							{% for machine in documentation.machines %}
 	  								{% if machine %}
 										<li><a href="{% url 'machine_detail' machine.pk %}">{{ machine }}</a></li>
@@ -77,7 +77,7 @@
 					<tr>
 						<td>Persons</td>
 						<td>
-							<ul>
+							<ul class="w3-ul core-ul">
 	  							{% for person in documentation.persons %}
 	  								{% if person %}
 										<li><a href="{% url 'person_detail' person.pk %}">{{ person }}</a></li>
@@ -91,7 +91,7 @@
 					<tr>
 						<td>Fertilizer</td>
 						<td>
-							<ul>
+							<ul class="w3-ul core-ul">
 	  							{% for fertilizer in documentation.fertilizers %}
 	  								{% if fertilizer %}
 										<li><a href="{% url 'fertilizer_detail' fertilizer.pk %}">{{ fertilizer }}</a></li>
@@ -106,7 +106,7 @@
 					<tr>
 						<td>Plant protectants</td>
 						<td>
-							<ul>
+							<ul class="w3-ul core-ul">
 	  							{% for plant_protectant in documentation.plant_protectants %}
 	  								{% if plant_protectant %}
 										<li><a href="{% url 'plant_protectant_detail' plant_protectant.pk %}">{{ plant_protectant }}</a></li>
@@ -121,7 +121,7 @@
 					<tr>
 						<td>Seeds</td>
 						<td>
-							<ul>
+							<ul class="w3-ul core-ul">
 	  							{% for seed in documentation.seeds %}
 	  								{% if seed %}
 										<li><a href="{% url 'seed_detail' seed.pk %}">{{ seed }}</a></li>
@@ -131,6 +131,10 @@
 						</td>
 					</tr>
 					{% endif %}
+					<tr>
+						<td>Comments</td>
+						<td>{{ documentation.comments }}</td>
+					</tr>
 				</table>
 				<br />
 	  			<a href="{% url 'documentation_edit' documentation.pk %}" class="w3-button w3-theme-d1">Edit</a>
