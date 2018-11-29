@@ -7,7 +7,7 @@
  	<ul class="breadcrumbs">
    		<li class="first"><a href="{% url 'index' %}"><i class="fa fa-home w3-margin-right"></i></a></li>
    		<li><a href="{% url 'data' %}">Data</a></li>
-    	<li class="last active"><a href="{% url 'plantprotectant_list' %}">Plant protectants</a></li>
+    	<li class="last active"><a href="{% url 'plant_protectant_list' %}">Plant protectants</a></li>
   	</ul>
 {% endblock %}
 
@@ -56,7 +56,7 @@
 							<script type="text/javascript">
 								$("#toggle-{{ plant_protectant.id }}").click(function() {
 									$.ajax({
-										url : "{% url 'plantprotectant_activate' %}",
+										url : "{% url 'plant_protectant_activate' %}",
 										type : "POST",
 										data : { plant_protectant_id : {{ plant_protectant.id }},
 												 activated : this.checked ? 1 : 0},
